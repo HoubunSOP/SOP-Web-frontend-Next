@@ -25,6 +25,9 @@ export function Topswiper() {
           slidesPerView="auto"
           spaceBetween={30}
           loop
+          onInit={() => {
+            console.log('swiper initialized');
+          }}
           slides-per-view="3"
           centeredSlides
           autoplay={{
