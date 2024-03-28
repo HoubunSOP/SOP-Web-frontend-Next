@@ -15,6 +15,7 @@ const objData = {
   1: '我是第一条数据',
   2: '我是第二条数据',
   3: '我是第三条数据',
+  4: '我是第三条数据',
 };
 export function Topswiper() {
   return (
@@ -24,7 +25,7 @@ export function Topswiper() {
           slidesPerView="auto"
           spaceBetween={30}
           loop
-          slides-per-view="2"
+          slides-per-view="3"
           centeredSlides
           autoplay={{
             delay: 2500,
