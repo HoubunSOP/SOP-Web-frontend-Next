@@ -1,5 +1,7 @@
 'use client';
 
+import { useDisclosure } from '@mantine/hooks';
+import { LoadingOverlay, Box } from '@mantine/core';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Image from 'next/image';
 import './Topswiper.css';
@@ -18,15 +20,18 @@ const objData = {
   4: '我是第三条数据',
 };
 export function Topswiper() {
+  const [visible, { toggle }] = useDisclosure(true);
   return (
-    <>
-      <div>
+    <div>
+      <Box pos="relative">
+        <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
+
         <Swiper
           slidesPerView="auto"
           spaceBetween={30}
           loop
           onInit={() => {
-            console.log('swiper initialized');
+            toggle();
           }}
           slides-per-view="3"
           centeredSlides
@@ -39,7 +44,7 @@ export function Topswiper() {
           className="TopSwiper"
         >
           {Object.entries(objData).map(([id, text]) => (
-            <SwiperSlide className="transition-opacity ease-in-out">
+            <SwiperSlide key={id} className="transition-opacity ease-in-out">
               <a href={`/post/${id}`}>
                 <Image
                   src="https://s2.loli.net/2023/09/27/AGI8xiK5qPMj7ma.webp"
@@ -62,7 +67,7 @@ export function Topswiper() {
             </SwiperSlide>
           ))}
         </Swiper>
-      </div>
-    </>
+      </Box>
+    </div>
   );
 }
