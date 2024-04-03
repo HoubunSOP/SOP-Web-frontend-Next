@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import './Navbar.css';
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -13,17 +14,36 @@ export function Navbar() {
     { name: '漫画分类', path: '/category/comic' },
     { name: '特典', path: '/list/post?c=6' },
   ];
+  const [isVisible, setIsVisible] = useState(true);
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset;
+
+      if (currentScrollPos > prevScrollPos && isVisible) {
+        setIsVisible(false);
+      } else if (currentScrollPos < prevScrollPos && !isVisible) {
+        setIsVisible(true);
+      }
+
+      setPrevScrollPos(currentScrollPos);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isVisible, prevScrollPos]);
 
   return (
     <>
       <div className="flex flex-col transition-all ease-in-out">
         <nav
-          className={`sticky top-0 z-[100] w-full backdrop-blur-md flex-none transition-colors duration-500 lg:z-50 lg:border-b bg-[#3752abb3] shadow-lg md:rounded-none z-50 ${
+          className={`navbar sticky top-0 z-[100] w-full backdrop-blur-md flex-none transition-colors duration-500 lg:border-b bg-[#3752abb3] shadow-lg md:rounded-none ${
             isMobileMenuOpen ? '' : 'rounded-b-lg'
-          }`}
+          } ${isVisible ? 'visible' : 'hidden'} `}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
+          <div className="grow  max-w-7xl max-w-md:mx-auto md:mx-24 px-4 sm:px-6 lg:px-8">
+            <div className="flex  items-center justify-between h-16">
               <div className="flex items-center">
                 <a className="flex-shrink-0" href="/">
                   <Image src="/logo.svg" alt="Logo" width={32} height={32} loading="lazy" />

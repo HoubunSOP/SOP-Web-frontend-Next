@@ -1,9 +1,8 @@
 'use client';
 
 import { useDisclosure } from '@mantine/hooks';
-import { LoadingOverlay, Box } from '@mantine/core';
+import { LoadingOverlay, Box, Image } from '@mantine/core';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import Image from 'next/image';
 import './Topswiper.css';
 
 // Import Swiper styles

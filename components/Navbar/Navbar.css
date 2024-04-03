@@ -1,0 +1,17 @@
+.navbar {
+  position: fixed;
+  display: flex;
+  transition: top 0.3s;
+}
+
+.navbar.hidden {
+  top: -60px;
+}
+
+.navbar.visible {
+  top: 0;
+}
+
+.navbar:hover{
+  top: 0;
+}
