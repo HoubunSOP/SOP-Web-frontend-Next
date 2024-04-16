@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import './Navbar.css';
+import { Autocomplete } from '@mantine/core';
+import { IconSearch } from '@tabler/icons-react';
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -62,6 +64,12 @@ export function Navbar() {
                   </div>
                 </div>
               </div>
+              <Autocomplete
+                placeholder="Search"
+                leftSection={<IconSearch style={{ width: 16, height: 16 }} stroke={1.5} />}
+                data={['React', 'Angular', 'Vue', 'Next.js', 'Riot.js', 'Svelte', 'Blitz.js']}
+                visibleFrom="xs"
+              />
               <div className="-mr-2 flex md:hidden">
                 <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

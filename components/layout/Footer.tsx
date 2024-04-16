@@ -6,15 +6,6 @@ import classes from './Footer.module.css';
 
 const data = [
   {
-    title: 'About',
-    links: [
-      { label: 'Features', link: '#' },
-      { label: 'Pricing', link: '#' },
-      { label: 'Support', link: '#' },
-      { label: 'Forums', link: '#' },
-    ],
-  },
-  {
     title: '相关页面',
     links: [
       {
