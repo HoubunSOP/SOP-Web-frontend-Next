@@ -30,49 +30,47 @@ export function Mangaswiper() {
       </div>
       <Box pos="relative">
         <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
-        <Suspense fallback={<Skeleton />}>
-          <Swiper
-            slidesPerView="auto"
-            spaceBetween={30}
-            loop
-            onInit={() => {
-              toggle();
-            }}
-            slides-per-view="3"
-            centeredSlides
-            autoplay={{
-              delay: 2500,
-              disableOnInteraction: false,
-            }}
-            pagination={{ type: 'progressbar' }}
-            modules={[Autoplay, Pagination, Navigation]}
-            className="TopSwiper"
-          >
-            {Object.entries(objData).map(([id, text]) => (
-              <SwiperSlide key={id} className="transition-opacity ease-in-out">
-                <a href={`/post/${id}`}>
-                  <Image
-                    src="https://s2.loli.net/2023/09/27/AGI8xiK5qPMj7ma.webp"
-                    alt="封面"
-                    width={560}
-                    height={280}
-                    style={{
-                      width: '100%',
-                      borderRadius: '9px',
-                      height: '100%',
-                    }}
-                  />
+        <Swiper
+          slidesPerView="auto"
+          spaceBetween={30}
+          loop
+          onInit={() => {
+            toggle();
+          }}
+          slides-per-view="3"
+          centeredSlides
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          pagination={{ type: 'progressbar' }}
+          modules={[Autoplay, Pagination, Navigation]}
+          className="TopSwiper"
+        >
+          {Object.entries(objData).map(([id, text]) => (
+            <SwiperSlide key={id} className="transition-opacity ease-in-out">
+              <a href={`/post/${id}`}>
+                <Image
+                  src="https://s2.loli.net/2023/09/27/AGI8xiK5qPMj7ma.webp"
+                  alt="封面"
+                  width={560}
+                  height={280}
+                  style={{
+                    width: '100%',
+                    borderRadius: '9px',
+                    height: '100%',
+                  }}
+                />
 
-                  <div className="caption-wrap">
-                    <div className="caption">
-                      <span>{text}</span>
-                    </div>
+                <div className="caption-wrap">
+                  <div className="caption">
+                    <span>{text}</span>
                   </div>
-                </a>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </Suspense>
+                </div>
+              </a>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </Box>
     </div>
   );

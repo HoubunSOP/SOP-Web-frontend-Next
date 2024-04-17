@@ -40,11 +40,11 @@ export function Navbar() {
     <>
       <div className="flex flex-col transition-all ease-in-out">
         <nav
-          className={`navbar sticky top-0 z-[100] w-full backdrop-blur-md flex-none transition-colors duration-500 lg:border-b bg-[#3752abb3] shadow-lg md:rounded-none ${
+          className={`navbar sticky top-0 z-[100] w-full backdrop-blur-md grow shrink-0 transition-colors duration-500 lg:border-b bg-[#3752abb3] shadow-lg md:rounded-none ${
             isMobileMenuOpen ? '' : 'rounded-b-lg'
           } ${isVisible ? 'visible' : 'hidden'} `}
         >
-          <div className="grow  max-w-7xl max-w-md:mx-auto md:mx-24 px-4 sm:px-6 lg:px-8">
+          <div className="grow  w-full max-w-md:mx-auto md:mx-24 px-4 sm:px-6 lg:px-8">
             <div className="flex  items-center justify-between h-16">
               <div className="flex items-center">
                 <a className="flex-shrink-0" href="/">
@@ -65,9 +65,9 @@ export function Navbar() {
                 </div>
               </div>
               <Autocomplete
-                placeholder="Search"
+                placeholder="搜索..."
                 leftSection={<IconSearch style={{ width: 16, height: 16 }} stroke={1.5} />}
-                data={['React', 'Angular', 'Vue', 'Next.js', 'Riot.js', 'Svelte', 'Blitz.js']}
+                data={['高级搜索']}
                 visibleFrom="xs"
               />
               <div className="-mr-2 flex md:hidden">
