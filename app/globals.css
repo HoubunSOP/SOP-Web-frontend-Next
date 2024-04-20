@@ -28,6 +28,7 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #d7e9f8;
 }
+
 :root {
   --waline-theme-color: #27aee6;
   --waline-active-color: #2eccfb;
