@@ -4,9 +4,8 @@
 
 body {
   background-color: #f7f7f7 !important;
-  font-family: 'Microsoft Yahei UI', 'Hiragino Kaku Gothic ProN',
-    'Hiragino Sans', 'BIZ UDPGothic', Meiryo, Roboto, 'Open Sans', Helvetica,
-    'DejaVu Sans', Arial, sans-serif;
+  font-family: 'Microsoft Yahei UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'BIZ UDPGothic',
+    Meiryo, Roboto, 'Open Sans', Helvetica, 'DejaVu Sans', Arial, sans-serif;
 }
 /* width */
 ::-webkit-scrollbar {
@@ -32,14 +31,4 @@ body {
 :root {
   --waline-theme-color: #27aee6;
   --waline-active-color: #2eccfb;
-}
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
 }

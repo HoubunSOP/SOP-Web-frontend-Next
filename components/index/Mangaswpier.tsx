@@ -1,24 +1,73 @@
 'use client';
 
 import { useDisclosure } from '@mantine/hooks';
-import { LoadingOverlay, Box, Image, Skeleton } from '@mantine/core';
+import { LoadingOverlay, Box, Image } from '@mantine/core';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import './Topswiper.css';
+import './Mangaswpier.css';
 
 // Import Swiper styles
 import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/autoplay';
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
-import { Suspense } from 'react';
+import 'swiper/css/scrollbar';
+import { Scrollbar } from 'swiper/modules';
 
-const objData = {
-  1: '我是第一条数据',
-  2: '我是第二条数据',
-  3: '我是第三条数据',
-  4: '我是第三条数据',
+const objData = [
+  {
+    id: 0,
+    name: 'test',
+    date: '2024-1-2',
+    mv_img: '/images/label_6.webp',
+    cover: '/images/now_printing.webp',
+  },
+  {
+    id: 1,
+    name: 'qwq',
+    date: '2024-1-2',
+    mv_img: '/images/label_4.webp',
+    cover: '/images/now_printing.webp',
+  },
+  {
+    id: 2,
+    name: 'qwq',
+    date: '2024-1-2',
+    mv_img: '/images/label_4.webp',
+    cover: '/images/now_printing.webp',
+  },
+  {
+    id: 3,
+    name: 'qwq',
+    date: '2024-1-2',
+    mv_img: '/images/label_4.webp',
+    cover: '/images/now_printing.webp',
+  },
+  {
+    id: 4,
+    name: 'qwq',
+    date: '2024-1-2',
+    mv_img: '/images/label_4.webp',
+    cover: '/images/now_printing.webp',
+  },
+  {
+    id: 5,
+    name: 'qwq',
+    date: '2024-1-2',
+    mv_img: '/images/label_4.webp',
+    cover: '/images/now_printing.webp',
+  },
+];
+
+const formatTime = (time: string) => time.slice(5).replace(/-/g, '/');
+
+const TimeFormatter: React.FC<{ time: string }> = ({ time }) => {
+  const formattedTime = formatTime(time);
+  return (
+    <div className="rounded-tl-md absolute w-12 h-5 text-center text-white bg-black/[0.5]">
+      {formattedTime}
+    </div>
+  );
 };
+
+export default TimeFormatter;
+
 export function Mangaswiper() {
   const [visible, { toggle }] = useDisclosure(true);
   return (
@@ -33,44 +82,49 @@ export function Mangaswiper() {
         <Swiper
           slidesPerView="auto"
           spaceBetween={30}
-          loop
+          scrollbar={{
+            el: '.swiper-scrollbar',
+            draggable: true,
+            snapOnRelease: false,
+            dragSize: 'auto',
+          }}
           onInit={() => {
             toggle();
           }}
-          slides-per-view="3"
-          centeredSlides
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
-          pagination={{ type: 'progressbar' }}
-          modules={[Autoplay, Pagination, Navigation]}
-          className="TopSwiper"
+          modules={[Scrollbar]}
+          className="MangaSwiper select-none rounded-md"
         >
-          {Object.entries(objData).map(([id, text]) => (
-            <SwiperSlide key={id} className="transition-opacity ease-in-out">
-              <a href={`/post/${id}`}>
-                <Image
-                  src="https://s2.loli.net/2023/09/27/AGI8xiK5qPMj7ma.webp"
-                  alt="封面"
-                  width={560}
-                  height={280}
-                  style={{
-                    width: '100%',
-                    borderRadius: '9px',
-                    height: '100%',
-                  }}
-                />
-
-                <div className="caption-wrap">
-                  <div className="caption">
-                    <span>{text}</span>
-                  </div>
+          {objData.map((item) => (
+            <SwiperSlide key={item.id} className="transition-opacity ease-in-out">
+              <div className="SwiperCard hover:opacity-80 transition-opacity ease-in-out">
+                <div className="rounded-tl-md absolute w-12 h-5 text-center text-white bg-black/[0.5]">
+                  <TimeFormatter time={item.date} />
                 </div>
-              </a>
+                <div>
+                  <a href={`/comic/${item.id}`}>
+                    <Image
+                      loading="lazy"
+                      alt={item.name}
+                      width={120}
+                      height={170}
+                      className="rounded-md max-w-full h-[170px] !w-[120px]"
+                      src={item.cover}
+                    />
+                    <Image
+                      className="rounded-md block my-1.5 mx-auto h-[16px] !w-[32px]"
+                      src={item.mv_img}
+                      width={32}
+                      height={16}
+                      alt="mv_img"
+                    />
+                  </a>
+                </div>
+                <div className="text-sm text-center">{item.name}</div>
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
+        <div className="swiper-scrollbar !h-2.5 my-2" />
       </Box>
     </div>
   );

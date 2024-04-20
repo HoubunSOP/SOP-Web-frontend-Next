@@ -48,7 +48,13 @@ export function Navbar() {
             <div className="flex  items-center justify-between h-16">
               <div className="flex items-center">
                 <a className="flex-shrink-0" href="/">
-                  <Image src="/logo.svg" alt="Logo" width={32} height={32} loading="lazy" />
+                  <Image
+                    src="/images/logo/logo.svg"
+                    alt="Logo"
+                    width={32}
+                    height={32}
+                    loading="lazy"
+                  />
                 </a>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
@@ -112,7 +118,10 @@ export function Navbar() {
               </div>
             </div>
           </div>
-          <div className={isMobileMenuOpen ? 'block' : 'hidden'} id="mobile-menu">
+          <div
+            className={isMobileMenuOpen ? 'block absolute top-[64px]' : 'hidden'}
+            id="mobile-menu"
+          >
             <div className="fixed px-2 pt-2 pb-3 w-full space-y-1 sm:px-3 bg-[#3752abb3] rounded-b-lg">
               {navPages.map((navPage) => (
                 <a
@@ -123,6 +132,10 @@ export function Navbar() {
                   {navPage.name}
                 </a>
               ))}
+              <Autocomplete
+                placeholder="搜索..."
+                leftSection={<IconSearch style={{ width: 16, height: 16 }} stroke={1.5} />}
+              />
             </div>
           </div>
         </nav>

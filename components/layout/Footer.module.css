@@ -1,6 +1,6 @@
 .footer {
-  margin-top: calc(7.5rem* var(--mantine-scale));
-  padding-top: calc(var(--mantine-spacing-xl)* 2);
+  margin-top: calc(7.5rem * var(--mantine-scale));
+  padding-top: calc(var(--mantine-spacing-xl) * 2);
   background-color: var(--mantine-color-gray-0);
 }
 
@@ -43,27 +43,21 @@
 }
 
 .wrapper {
-  width: calc(10rem* var(--mantine-scale));
+  width: calc(10rem * var(--mantine-scale));
 }
 
 .link {
   display: block;
   color: light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-1));
   font-size: var(--mantine-font-size-sm);
-  padding-top: calc(.1875rem* var(--mantine-scale));
-  padding-bottom: calc(.1875rem* var(--mantine-scale));
-
-
+  padding-top: calc(0.1875rem * var(--mantine-scale));
+  padding-bottom: calc(0.1875rem * var(--mantine-scale));
 }
-.link:hover {
-  text-decoration: underline;
-}
+
 .title {
   font-size: var(--mantine-font-size-lg);
   font-weight: 700;
-  font-family:
-    Greycliff CF,
-    var(--mantine-font-family);
+  font-family: var(--mantine-font-family);
   margin-bottom: calc(var(--mantine-spacing-xs) / 2);
   color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
 }
@@ -75,7 +69,7 @@
   margin-top: var(--mantine-spacing-xl);
   padding-top: var(--mantine-spacing-xl);
   padding-bottom: var(--mantine-spacing-xl);
-  border-top: calc(.0625rem * var(--mantine-scale)) solid var(--mantine-color-gray-2);
+  border-top: calc(0.0625rem * var(--mantine-scale)) solid var(--mantine-color-gray-2);
 
   @media (max-width: 48em) {
     flex-direction: column;
