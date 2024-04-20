@@ -51,7 +51,7 @@ export function Navbar() {
                   <Image
                     src="/images/logo/logo.svg"
                     alt="Logo"
-                    width={32}
+                    width={165}
                     height={32}
                     loading="lazy"
                   />

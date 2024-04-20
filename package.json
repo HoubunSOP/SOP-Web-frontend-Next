@@ -26,6 +26,7 @@
     "autoprefixer": "^10.4.19",
     "axios": "^1.6.8",
     "next": "14.0.1",
+    "nextjs-toploader": "^1.6.11",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "swiper": "^11.0.7",
