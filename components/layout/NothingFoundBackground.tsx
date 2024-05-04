@@ -1,4 +1,5 @@
 import { Container, Title, Text, Button, Group } from '@mantine/core';
+import Link from 'next/link';
 import { Illustration } from './Illustration';
 import classes from './NothingFoundBackground.module.css';
 
@@ -8,13 +9,16 @@ export function NothingFoundBackground() {
       <div className={classes.inner}>
         <Illustration className={classes.image} />
         <div className={classes.content}>
-          <Title className={classes.title}>Nothing to see here</Title>
+          <Title className={classes.title}>这里似乎并没有你希望找到的小行星</Title>
           <Text c="dimmed" size="lg" ta="center" className={classes.description}>
-            Page you are trying to open does not exist. You may have mistyped the address, or the
-            page has been moved to another URL. If you think this is an error contact support.
+            寻找小行星这一目标还是朦朦胧胧无处下手，但像这河滩上找到的，小化石一样的行星一定存在着
+            <br />
+            在这宇宙的某处
           </Text>
           <Group justify="center">
-            <Button size="md">Take me back to home page</Button>
+            <Button component={Link} href="/" size="md">
+              去看看已知的小行星吧
+            </Button>
           </Group>
         </div>
       </div>

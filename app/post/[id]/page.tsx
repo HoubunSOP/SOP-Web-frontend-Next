@@ -1,5 +1,6 @@
 import { List } from 'postcss/lib/list';
 import { Image } from '@mantine/core';
+import { redirect } from 'next/navigation';
 import { MainColumn } from '@/components/layout/MainColumn';
 import '../globals.css';
 
@@ -21,6 +22,9 @@ export default async function PokemonName({ params }: { params: { id: Number } }
       categories: List;
     };
   };
+  if (data.status === 'error') {
+    redirect('/not-found');
+  }
 
   return (
     <>
