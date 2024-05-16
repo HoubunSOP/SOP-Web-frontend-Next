@@ -3,8 +3,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import './Navbar.css';
-import { Autocomplete } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -15,6 +13,7 @@ export function Navbar() {
     { name: '漫画列表', path: '/list/comic' },
     { name: '漫画分类', path: '/category/comic' },
     { name: '特典', path: '/list/post?c=6' },
+    { name: '搜索', path: '/list/post?c=6' },
   ];
   const [isVisible, setIsVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -70,12 +69,6 @@ export function Navbar() {
                   </div>
                 </div>
               </div>
-              <Autocomplete
-                placeholder="搜索..."
-                leftSection={<IconSearch style={{ width: 16, height: 16 }} stroke={1.5} />}
-                data={['高级搜索']}
-                visibleFrom="xs"
-              />
               <div className="-mr-2 flex md:hidden">
                 <button
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -132,10 +125,6 @@ export function Navbar() {
                   {navPage.name}
                 </a>
               ))}
-              <Autocomplete
-                placeholder="搜索..."
-                leftSection={<IconSearch style={{ width: 16, height: 16 }} stroke={1.5} />}
-              />
             </div>
           </div>
         </nav>

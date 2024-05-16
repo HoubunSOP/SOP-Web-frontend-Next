@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { Box, Image, LoadingOverlay, Pagination } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { Sidebar } from '@/components/index/Sidebar';
 import { MainColumn } from '@/components/layout/MainColumn';
 
@@ -14,48 +16,51 @@ interface Comic {
   auto: number;
 }
 
-const MainPage: React.FC = () => {
+export default function ComicListPage() {
   const [totalPages, setTotalPages] = useState(1);
-  const [comics, setComics] = useState<Comic[]>([
-    {
-      id: 0,
-      name: '',
-      date: '',
-      cover: '',
-      auto: 0,
-    },
-  ]);
+  const [comics, setComics] = useState<Comic[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const router = useRouter();
+  const [visible, toggle] = useState(true);
+  const searchParams = useSearchParams();
+
+  const category_id = searchParams.get('category_id');
 
   const fetchComics = async () => {
-    let url = `/comic/list?limit=10&page=${currentPage}`;
-    if (router.query.c != null) {
-      url += `&category_id=${router.query.c}`;
+    let url = `/comic/list?limit=12&page=${currentPage}`;
+    if (category_id != null) {
+      url += `&category_id=${category_id}`;
     }
 
     try {
       const response = await fetch(`https://api.fwgxt.top/api/${url}`);
       const data = await response.json();
-      setComics(data.message.comics);
       if (data.status === 'error') {
-        router.push('/');
+        console.log('error');
       }
+      setComics(data.message.comics);
+      toggle(false);
       setTotalPages(data.message.total_pages);
     } catch (error) {}
   };
 
   useEffect(() => {
+    toggle(true);
     fetchComics();
   }, [currentPage]);
+  // 创建一个包含 12 个空对象的数组
+  const emptyComics = Array.from({ length: 12 }, () => ({
+    id: 0,
+    name: '正在获取中',
+    date: '请稍后',
+    cover: 'https://houbunsha.co.jp/img/mv_img/con_item_nPrn_1.png',
+    auto: 1,
+  }));
 
-  const onPageChanged = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  // 如果 comics 数组为空，使用 emptyComics 替代
+  const comicsWithFallback = comics.length > 0 ? comics : emptyComics;
 
   return (
-    <div>
+    <>
       <MainColumn>
         <div className="px-[22px] pt-[18px] border-b-[2px] border-gray-200 overflow-hidden bg-white box-border">
           <div className="relative mb-0">
@@ -67,42 +72,54 @@ const MainPage: React.FC = () => {
             </h1>
           </div>
         </div>
-        <div className="flex flex-wrap margin-[-5px] mt-[10px]">
-          {comics.map((index) => (
-            <div
-              key={index.id}
-              className="comic max-w-none mt-0 mx-[5px] mb-[18px] rounded-md list-none transition-all hover:bg-slate-100 hover:scale-[1.02] ease-in-out"
-              style={{ width: 'calc(100% / 4 - 10px)' }}
-            >
-              <Link href={`/comic/${index.id}`}>
-                <figure className="rounded-md m-0 overflow-hidden relative">
-                  <span className="relative block h-0 w-full pt-[150%] overflow-hidden">
-                    <img
-                      alt="manga cover"
-                      loading="lazy"
-                      className="object-cover rounded-md h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2"
-                      height="134"
-                      src="index.cover"
-                      width="96"
-                      placeholder="/img/now_printing.webp"
-                    />
-                  </span>
-                </figure>
-              </Link>
-              <p className="text-center whitespace-nowrap text-ellipsis text-[15px] h-[25px] font-normal overflow-hidden">
-                <span className="text-[#ef4444]">*</span>
-                {index.name}
-              </p>
-              <p className="mt-[8px] text-center whitespace-nowrap text-[#808080] text-[10px] font-normal">
-                {index.date}发布
-              </p>
-            </div>
-          ))}
-        </div>
+        <Box pos="relative">
+          <LoadingOverlay
+            visible={visible}
+            zIndex={1000}
+            overlayProps={{ radius: 'sm', blur: 2 }}
+          />
+          <div className="flex flex-wrap margin-[-5px] mt-[10px]">
+            {comicsWithFallback.map((index, i) => (
+              <div
+                key={i}
+                className="comic max-w-none mt-0 mx-[5px] mb-[18px] rounded-md list-none transition-all hover:bg-slate-100 hover:scale-[1.02] ease-in-out"
+                style={{ width: 'calc(100% / 4 - 10px)' }}
+              >
+                <Link href={`/comic/${index.id}`}>
+                  <figure className="rounded-md m-0 overflow-hidden relative">
+                    <span className="relative block h-0 w-full pt-[150%] overflow-hidden ">
+                      <Image
+                        alt="manga cover"
+                        loading="lazy"
+                        className="object-cover !rounded-md h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2"
+                        height={134}
+                        src={index.cover || '/img/now_printing.webp'}
+                        width={96}
+                        placeholder="/img/now_printing.webp"
+                      />
+                    </span>
+                  </figure>
+                </Link>
+                <p className="text-center whitespace-nowrap text-ellipsis text-[15px] h-[25px] font-normal overflow-hidden">
+                  <span className="text-[#ef4444]">*</span>
+                  {index.name || '占位文本'}
+                </p>
+                <p className="mt-[8px] text-center whitespace-nowrap text-[#808080] text-[10px] font-normal">
+                  {index.date || '占位文本'}发布
+                </p>
+              </div>
+            ))}
+          </div>
+        </Box>
+        <Pagination
+          className="flex justify-center"
+          total={totalPages}
+          value={currentPage}
+          onChange={setCurrentPage}
+          mt="sm"
+        />
       </MainColumn>
       <Sidebar />
-    </div>
+    </>
   );
-};
-
-export default MainPage;
+}
