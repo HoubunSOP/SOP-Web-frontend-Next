@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { MainColumn } from '@/components/layout/MainColumn';
 import '../globals.css';
 
-export default async function PokemonName({ params }: { params: { id: Number } }) {
+export default async function PostPage({ params }: { params: { id: Number } }) {
   const { id } = params;
   // revalidate表示在指定的秒数内缓存请求，和pages目录中revalidate配置相同
   const res = await fetch(`https://api.fwgxt.top/api/post/${id}`, {
