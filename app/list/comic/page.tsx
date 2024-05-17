@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Box, Image, LoadingOverlay, Pagination } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { useScrollIntoView } from '@mantine/hooks';
 import { Sidebar } from '@/components/index/Sidebar';
 import { MainColumn } from '@/components/layout/MainColumn';
 
@@ -22,7 +22,7 @@ export default function ComicListPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [visible, toggle] = useState(true);
   const searchParams = useSearchParams();
-
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>();
   const category_id = searchParams.get('category_id');
 
   const fetchComics = async () => {
@@ -46,6 +46,7 @@ export default function ComicListPage() {
   useEffect(() => {
     toggle(true);
     fetchComics();
+    scrollIntoView();
   }, [currentPage]);
   // 创建一个包含 12 个空对象的数组
   const emptyComics = Array.from({ length: 12 }, () => ({
@@ -62,7 +63,10 @@ export default function ComicListPage() {
   return (
     <>
       <MainColumn>
-        <div className="px-[22px] pt-[18px] border-b-[2px] border-gray-200 overflow-hidden bg-white box-border">
+        <div
+          className="px-[22px] pt-[18px] border-b-[2px] border-gray-200 overflow-hidden bg-white box-border"
+          ref={targetRef}
+        >
           <div className="relative mb-0">
             <h1 className="m-0 flex">
               <span className="inline-block text-[#242a36] text-base font-bold tracking-wide">
