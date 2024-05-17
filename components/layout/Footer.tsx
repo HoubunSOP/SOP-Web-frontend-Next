@@ -1,7 +1,8 @@
 'use client';
 
 import { Text, Container, ActionIcon, Group, rem, Image } from '@mantine/core';
-import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from '@tabler/icons-react';
+import { IconBrandBilibili, IconBrandGithub } from '@tabler/icons-react';
+import Link from 'next/link';
 import classes from './Footer.module.css';
 
 const data = [
@@ -70,14 +71,17 @@ export function Footer() {
         </Text>
 
         <Group gap={0} className={classes.social} justify="flex-end" wrap="nowrap">
-          <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandTwitter style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+          <ActionIcon
+            component={Link}
+            href="https://space.bilibili.com/1585955812"
+            size="lg"
+            color="gray"
+            variant="subtle"
+          >
+            <IconBrandBilibili style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandYoutube style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
-          </ActionIcon>
-          <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandInstagram style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+          <ActionIcon component={Link} href="/"  size="lg" color="gray" variant="subtle">
+            <IconBrandGithub style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>
         </Group>
       </Container>
