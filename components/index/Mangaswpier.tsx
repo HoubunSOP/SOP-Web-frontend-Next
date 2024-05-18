@@ -103,7 +103,6 @@ export function Mangaswiper() {
                 <div>
                   <a href={`/comic/${item.id}`}>
                     <Image
-                      loading="lazy"
                       alt={item.name}
                       width={120}
                       height={170}

@@ -119,9 +119,7 @@ export default function ComicListPage() {
           total={totalPages}
           value={currentPage}
           onChange={setCurrentPage}
-          color="indigo"
-          radius="md"
-          withEdges
+          mt="sm"
         />
       </MainColumn>
       <Sidebar />

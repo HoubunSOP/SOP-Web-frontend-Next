@@ -3,6 +3,7 @@ import { Image } from '@mantine/core';
 import { redirect } from 'next/navigation';
 import { MainColumn } from '@/components/layout/MainColumn';
 import '../globals.css';
+import { Sidebar } from '@/components/index/Sidebar';
 
 export default async function PostPage({ params }: { params: { id: Number } }) {
   const { id } = params;
@@ -58,6 +59,7 @@ export default async function PostPage({ params }: { params: { id: Number } }) {
           </div>
         </article>
       </MainColumn>
+      <Sidebar />
     </>
   );
 }

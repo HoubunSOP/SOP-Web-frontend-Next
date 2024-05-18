@@ -80,7 +80,7 @@ export function Footer() {
           >
             <IconBrandBilibili style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon component={Link} href="/"  size="lg" color="gray" variant="subtle">
+          <ActionIcon component={Link} href="/" size="lg" color="gray" variant="subtle">
             <IconBrandGithub style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>
         </Group>

@@ -250,6 +250,7 @@
   border-radius: 4px;
   font-size: 1rem;
 }
+
 #post-content blockquote p {
   border-color: #dbdbdb;
   border-radius: 4px;
@@ -257,4 +258,15 @@
   border-width: 0 0 0 4px;
   color: #4a4a4a;
   padding: 1.25em 1.5em;
+}
+
+@media screen and (min-width: 768px) {
+  .info {
+    width: calc(100% - 180px);
+  }
+}
+
+.ListTerm::after {
+  content: '\FF1A';
+  display: inline;
 }
