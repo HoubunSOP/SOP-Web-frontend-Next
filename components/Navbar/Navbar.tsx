@@ -38,7 +38,7 @@ const links = [
     label: '特典',
   },
   {
-    link: '#magazine',
+    link: '/search',
     label: '搜索',
   },
 ];
@@ -50,7 +50,7 @@ const navPages = [
   { name: '杂志列表', path: '/list/magazine' },
   { name: '杂志分类', path: '/category/magazine' },
   { name: '特典', path: '/list/post?c=6' },
-  { name: '搜索', path: '/list/post?c=6' },
+  { name: '搜索', path: '/search' },
 ];
 
 export function Navbar() {

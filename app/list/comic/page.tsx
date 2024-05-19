@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Box, Image, LoadingOverlay, Pagination } from '@mantine/core';
 import { useScrollIntoView } from '@mantine/hooks';
-import { Sidebar } from '@/components/index/Sidebar';
+import { Sidebar } from '@/components/Sidebar/Sidebar';
 import { MainColumn } from '@/components/layout/MainColumn';
 
 interface Comic {

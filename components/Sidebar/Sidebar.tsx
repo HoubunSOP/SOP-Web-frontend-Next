@@ -1,6 +1,7 @@
 'use client';
 
-import DatePickerDemo from './IndexCalendar';
+import { Suspense } from 'react';
+import IndexCalendar from '../index/IndexCalendar';
 import '@mantine/dates/styles.css';
 
 export function Sidebar() {
@@ -12,7 +13,9 @@ export function Sidebar() {
             <span className="text-center font-bold text-[#242a36]">发售日历</span>
           </div>
           <div className="flex items-center justify-center">
-            <DatePickerDemo />
+            <Suspense fallback={<p>Loading weather...</p>}>
+              <IndexCalendar />
+            </Suspense>
           </div>
         </div>
         <div className="bg-white bg-opacity-75 rounded-lg">

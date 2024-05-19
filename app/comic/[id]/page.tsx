@@ -3,7 +3,7 @@ import { Image } from '@mantine/core';
 import { redirect } from 'next/navigation';
 import { MainColumn } from '@/components/layout/MainColumn';
 import '../globals.css';
-import { Sidebar } from '@/components/index/Sidebar';
+import { Sidebar } from '@/components/Sidebar/Sidebar';
 
 export default async function ComicPage({ params }: { params: { id: Number } }) {
   const { id } = params;
