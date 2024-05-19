@@ -4,7 +4,27 @@ import { IconNotebook } from '@tabler/icons-react';
 import 'dayjs/locale/zh-cn';
 import './IndexCalendar.css';
 
+interface CalendarData {
+  id: number;
+  name: string;
+  date: string;
+  cover: string;
+  auto: number;
+}
 function IndexCalendar() {
+  //const fetchComics = async () => {
+  //  let url = `/comic/list?limit=12&page=${currentPage}`;
+  //  if (category_id != null) {
+  //    url += `&category_id=${category_id}`;
+  //  }
+  //  try {
+  //    const response = await fetch(`https://api.fwgxt.top/api/${url}`);
+  //    const data = await response.json();
+  //    if (data.status === 'error') {
+  //      console.log('error');
+  //    }
+  //  } catch (error) {}
+  //};
   return (
     <Calendar
       static
