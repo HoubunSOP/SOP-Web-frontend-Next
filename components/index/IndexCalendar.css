@@ -1,0 +1,14 @@
+.mantine-Calendar-day:where([data-today]) {
+    background-color: #4453c1 !important; /* 您可以使用任何您喜欢的颜色 */
+    color: whitesmoke !important;
+}
+
+.mantine-Calendar-calendarHeader {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.mantine-Calendar-month {
+    width: 100% !important;
+    max-width: none !important;
+}

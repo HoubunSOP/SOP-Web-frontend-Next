@@ -1,0 +1,8 @@
+.MangaSwiper .swiper-slide {
+    width: 120px;
+    border-radius: 8px !important;
+}
+
+.swiper-scrollbar {
+    position: relative !important;
+}

@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: #f7f7f7 !important;
+    font-family: 'Microsoft Yahei UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'BIZ UDPGothic',
+    Meiryo, Roboto, 'Open Sans', Helvetica, 'DejaVu Sans', Arial, sans-serif;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #3e72b6;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #d7e9f8;
+}
+
+:root {
+    --waline-theme-color: #27aee6;
+    --waline-active-color: #2eccfb;
+
+}

@@ -1,0 +1,34 @@
+.navbar {
+    position: fixed;
+    display: flex;
+    transition: top 0.3s;
+}
+
+.navbar.hidden {
+    top: -55px;
+}
+
+.navbar.visible {
+    top: 0;
+}
+
+.navbar:hover {
+    top: 0;
+}
+
+.mantine-Burger-burger {
+    --burger-color: #fff !important;
+}
+
+.mantine-Menu-dropdown {
+    --popover-border-color: none !important;
+    background-color: #3752abb3 !important;
+}
+
+.mantine-Menu-dropdown *:where([data-hovered]) {
+    background-color: #3752aba1 !important;
+}
+
+.mantine-Menu-dropdown * {
+    color: white;
+}
