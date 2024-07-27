@@ -62,7 +62,7 @@ export default function ComicListPage() {
     }, [currentPage, category_id]);
 
     useEffect(() => {
-        const fetchLoad = async() =>{
+        const fetchLoad = async () => {
             try {
                 toggle(true);
                 await fetchComics();
@@ -87,7 +87,7 @@ export default function ComicListPage() {
                     queryParams.delete('p');
                     await fetchLoad()
                 }
-            }else {
+            } else {
                 await fetchLoad()
             }
         };

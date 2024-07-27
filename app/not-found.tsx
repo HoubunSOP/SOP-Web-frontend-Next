@@ -1,5 +1,5 @@
-import { NothingFoundBackground } from '@/components/layout/NothingFoundBackground';
+import {NothingFoundBackground} from '@/components/layout/NothingFoundBackground';
 
 export default function NotFound() {
-  return <NothingFoundBackground />;
+    return <NothingFoundBackground/>;
 }

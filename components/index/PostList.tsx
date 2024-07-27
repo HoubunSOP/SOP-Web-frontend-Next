@@ -34,16 +34,18 @@ export function PostList() {
                 <div className="ContentContainer">
                     {data.map((index) => (
                         <div key={index.id}
-                            className="pt-[26px] pb-[15px] px-6 relative rounded-md flex flex-wrap overflow-hidden transition-all hover:bg-slate-100 hover:scale-[1.02] ease-in-out">
-                            <Link href={`/post/${index.id}`} className="aText overflow-hidden h-[3.8rem] mr-5 text-sm font-medium line-clamp-3">
+                             className="pt-[26px] pb-[15px] px-6 relative rounded-md flex flex-wrap overflow-hidden transition-all hover:bg-slate-100 hover:scale-[1.02] ease-in-out">
+                            <Link href={`/post/${index.id}`}
+                                  className="aText overflow-hidden h-[3.8rem] mr-5 text-sm font-medium line-clamp-3">
                                 {index.title}
                             </Link>
                             <div
                                 className="justify-self-end ml-auto w-[120px] h-[72px] md:w-[142px] md:h-[88px] rounded-md overflow-hidden relative">
                                 <div className="h-full relative">
                                     <Link href={`/post/${index.id}`}>
-                                    <img loading="lazy" className="w-[100%] h-[100%] absolute top-0 left-0 object-cover"
-                                         src={index.cover} alt="post cover"/>
+                                        <img loading="lazy"
+                                             className="w-[100%] h-[100%] absolute top-0 left-0 object-cover"
+                                             src={index.cover} alt="post cover"/>
                                     </Link>
                                 </div>
                             </div>

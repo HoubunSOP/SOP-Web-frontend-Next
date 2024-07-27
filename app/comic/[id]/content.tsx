@@ -1,6 +1,6 @@
-import { List } from 'postcss/lib/list';
+import {List} from 'postcss/lib/list';
 import {Image} from '@mantine/core';
-import { redirect } from 'next/navigation';
+import {redirect} from 'next/navigation';
 import dynamic from 'next/dynamic';
 import '../globals.css';
 import ComicInfo from '@/components/comic/ComicInfo';
@@ -10,7 +10,7 @@ const PhotoClientComponent = dynamic(() => import('@/components/ImageView'), {
     ssr: false,
 });
 
-export default async function Content({ id }: { id: number  }) {
+export default async function Content({id}: { id: number }) {
     // revalidate表示在指定的秒数内缓存请求，和pages目录中revalidate配置相同
     const res = await fetch(`https://api.fwgxt.top/api/comic/${id}`, {
         next: {
@@ -47,11 +47,11 @@ export default async function Content({ id }: { id: number  }) {
                     </div>
                     <p className="mb-2.5 m-0 text-sm tracking-wide">
                         <a className="inline-block h-7 leading-7 py-0 px-3 bg-[#F2F2F2] rounded-2xl text-[#606060] text-xs mr-2">
-                            <i className="fa-regular fa-user" />
+                            <i className="fa-regular fa-user"/>
                             <span>{data.message.comic_author}</span>
                         </a>
                         <a className="inline-block h-7 leading-7 py-0 px-3 bg-[#F2F2F2] rounded-2xl text-[#606060] text-xs">
-                            <i className="fa-regular fa-star" />
+                            <i className="fa-regular fa-star"/>
                             <span>{data.message.comic_magazine}</span>
                         </a>
                     </p>
@@ -65,12 +65,13 @@ export default async function Content({ id }: { id: number  }) {
                         </h2>
                         <div
                             id="post-content"
-                            dangerouslySetInnerHTML={{ __html: data.message.comic_intro }}
+                            dangerouslySetInnerHTML={{__html: data.message.comic_intro}}
                         />
                     </div>
-                    <ComicInfo data={data} />
+                    <ComicInfo data={data}/>
                 </div>
-                <div className="w-[174px] order-first mx-auto md:ml-auto md:mb-auto md:mx-0 md:order-last md:self-end h-[245px] ">
+                <div
+                    className="w-[174px] order-first mx-auto md:ml-auto md:mb-auto md:mx-0 md:order-last md:self-end h-[245px] ">
                     <PhotoClientComponent photoSrc={data.message.comic_cover}>
                         <Image
                             className="h-[245px] w-[174px] !rounded-xl"
@@ -81,6 +82,6 @@ export default async function Content({ id }: { id: number  }) {
                 </div>
             </div>
         </div>
-);
+    );
 }
 
