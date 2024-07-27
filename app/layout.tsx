@@ -6,7 +6,6 @@ import NextTopLoader from 'nextjs-toploader';
 import { theme } from '@/theme';
 import {Navbar} from "@/components/Navbar/Navbar";
 import {Footer} from "@/components/layout/Footer";
-import Loading from "@/app/loading";
 
 
 export const metadata = {
@@ -30,9 +29,7 @@ export default function RootLayout({ children }: { children: any }) {
         <MantineProvider theme={theme}>
           <Navbar />
           <div className="relative flex flex-col md:flex-row md:justify-between mx-auto w-6/6 lg:w-5/6 xl:w-4/6 gap-10 top-24">
-              <Suspense fallback={<Loading/>}>
             {children}
-              </Suspense>
           </div>
           <Footer />
         </MantineProvider>
