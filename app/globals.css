@@ -5,7 +5,7 @@
 body {
     background-color: #f7f7f7 !important;
     font-family: 'Microsoft Yahei UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'BIZ UDPGothic',
-    Meiryo, Roboto, 'Open Sans', Helvetica, 'DejaVu Sans', Arial, sans-serif;
+    Meiryo, Roboto, 'Open Sans', Helvetica, 'DejaVu Sans', Arial, sans-serif !important;
 }
 
 /* width */

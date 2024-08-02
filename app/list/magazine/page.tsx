@@ -71,7 +71,7 @@ export default function ComicListPage() {
                     <div className="relative mb-0">
                         <h1 className="m-0 flex">
               <span className="inline-block text-[#242a36] text-base font-bold tracking-wide">
-                <i className="fa-duotone fa-books"/>
+                <i className="fa-solid fa-books"/>
                 漫画列表
               </span>
                         </h1>

@@ -74,7 +74,7 @@ export function Mangaswiper() {
         <div>
             <div className="pb-1 pt-5 px-5 my-4">
         <span className="text-lg text-white -ml-1.5 py-1 px-2.5 bg-[#4453c1] rounded">
-          未来发售的单行本 <i data-v-ac73f5b4="" className="fa-duotone fa-telescope"/>
+          未来发售的单行本 <i data-v-ac73f5b4="" className="fa-solid fa-telescope"/>
         </span>
             </div>
             <Box pos="relative">

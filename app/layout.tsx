@@ -19,9 +19,10 @@ export default function RootLayout({children}: { children: any }) {
         <head>
             <ColorSchemeScript/>
             <link rel="shortcut icon" href="/favicon.ico"/>
+            <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
             <meta
                 name="viewport"
-                content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
+                content="minimum-scale=1, initial-scale=1, width=device-width, user-scalzable=no"
             />
         </head>
         <body color="#f7f7f7">

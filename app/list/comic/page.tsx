@@ -7,6 +7,7 @@ import {useScrollIntoView} from '@mantine/hooks';
 import {Sidebar} from '@/components/Sidebar/Sidebar';
 import {MainColumn} from '@/components/layout/MainColumn';
 import {useSearchParams} from "next/navigation";
+import {fetchComics} from "@/utils/api";
 
 interface Comic {
     id: number;
@@ -37,35 +38,24 @@ export default function ComicListPage() {
         }
     }, []);
 
-    const fetchComics = useCallback(async () => {
-        let url = `/comic/list?limit=12&page=${currentPage}`;
-        if (category_id != null) {
-            url += `&category_id=${category_id}`;
+    const loadFetch = useCallback(async () => {
+        toggle(true);
+        const { items, total_pages, error } = await fetchComics(currentPage, category_id);
+        if (error) {
+            setCurrentPage(1);
+            return;
         }
 
-        try {
-            const response = await fetch(`https://api.fwgxt.top/api/${url}`);
-            const data = await response.json();
-
-            if (data.status === 'error') {
-                console.log('页码超数');
-                setCurrentPage(1);
-                return;
-            }
-
-            setComics(data.message.comics);
-            toggle(false);
-            setTotalPages(data.message.total_pages);
-        } catch (error) {
-            console.log(error);
-        }
+        setComics(items);
+        toggle(false);
+        setTotalPages(total_pages);
     }, [currentPage, category_id]);
 
     useEffect(() => {
         const fetchLoad = async () => {
             try {
                 toggle(true);
-                await fetchComics();
+                await loadFetch();
                 scrollIntoView();
 
                 const queryParams = new URLSearchParams(window.location.search);
@@ -117,8 +107,8 @@ export default function ComicListPage() {
                 >
                     <div className="relative mb-0">
                         <h1 className="m-0 flex">
-              <span className="inline-block text-[#242a36] text-base font-bold tracking-wide">
-                <i className="fa-duotone fa-books"/>
+              <span className="inline-block text-gray-900 text-xl font-bold tracking-wide">
+                <i className="fa-solid fa-book mr-1"/>
                 漫画列表
               </span>
                         </h1>

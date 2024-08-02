@@ -1,5 +1,7 @@
 'use client';
 import Link from 'next/link';
+import {useCallback, useState} from "react";
+import {fetchPosts} from "@/utils/api";
 
 const data = [
     {
@@ -22,14 +24,29 @@ const data = [
     },
 ];
 
+interface Post {
+    category_id: number;
+    category_name: string;
+    id: number;
+    title: string;
+    date: string;
+    cover: string;
+}
+
 export function PostList() {
+    const [articles, setPosts] = useState<Post[]>([]);
+    const loadFetch = useCallback(async () => {
+        const {items, total_pages, error} = await fetchPosts(1);
+
+        setPosts(items);
+    })
     return (
         <div>
             <div>
                 <h3 className="text-white mb-2 mt-10 mx-5 py-2.5 bg-[#4453c1] rounded-2xl text-center">
-                    <i className="fa-duotone fa-stars"/>
+                    <i className="fa-solid fa-stars"/>
                     观星资讯
-                    <i className="fa-duotone fa-moon-stars"/>
+                    <i className="fa-solid fa-moon-stars"/>
                 </h3>
                 <div className="ContentContainer">
                     {data.map((index) => (
@@ -52,11 +69,11 @@ export function PostList() {
                             <div className="absolute bottom-2.5">
                                 <Link href={`/list/post?${index.category_id}`}
                                       className="text-xs md:text-sm font-medium tracking-wide text-[#808080]">
-                                    <i className="fa-duotone fa-list-tree"/>
+                                    <i className="fa-solid fa-list-tree"/>
                                     {index.category_name}
                                 </Link>
                                 <span className="text-xs md:text-sm font-medium tracking-wide text-[#808080] pl-2">
-			                        <i className="fa-duotone fa-calendar-week"/>
+			                        <i className="fa-solid fa-calendar-week"/>
                                     {index.date}
 		                        </span>
                             </div>
