@@ -6,6 +6,7 @@ import {MainColumn} from '@/components/layout/MainColumn';
 import {PostList} from "@/components/index/PostList";
 
 export default function HomePage() {
+
     return (
         <>
             <MainColumn>

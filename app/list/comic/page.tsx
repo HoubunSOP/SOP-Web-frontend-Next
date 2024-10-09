@@ -24,7 +24,6 @@ export default function ComicListPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [visible, toggle] = useState(true);
     const {scrollIntoView, targetRef} = useScrollIntoView<HTMLDivElement>();
-
     // 获取URL中的查询参数
     const category_id = searchParams.get('category_id');
     const pageParam = searchParams.get('p');
@@ -40,7 +39,7 @@ export default function ComicListPage() {
 
     const loadFetch = useCallback(async () => {
         toggle(true);
-        const { items, total_pages, error } = await fetchComics(currentPage, category_id);
+        const {items, total_pages, error} = await fetchComics(currentPage, category_id);
         if (error) {
             setCurrentPage(1);
             return;
@@ -53,15 +52,18 @@ export default function ComicListPage() {
 
     useEffect(() => {
         const fetchLoad = async () => {
+            scrollIntoView();
             try {
                 toggle(true);
-                await loadFetch();
-                scrollIntoView();
 
-                const queryParams = new URLSearchParams(window.location.search);
-                queryParams.set('p', String(currentPage));
-                const newUrl = `${window.location.pathname}?${queryParams.toString()}`;
-                window.history.replaceState(null, '', newUrl);
+                await loadFetch();
+
+                if (currentPage !== 1) {
+                    const queryParams = new URLSearchParams(window.location.search);
+                    queryParams.set('p', String(currentPage));
+                    const newUrl = `${window.location.pathname}?${queryParams.toString()}`;
+                    window.history.replaceState(null, '', newUrl);
+                }
             } catch (error) {
                 console.error('加载漫画失败:', error);
             }

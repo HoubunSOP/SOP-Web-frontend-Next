@@ -1,12 +1,12 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback, useRef} from 'react';
 import Link from 'next/link';
-import {useSearchParams} from 'next/navigation';
-import {Box, Image, LoadingOverlay, Pagination} from '@mantine/core';
-import {useScrollIntoView} from '@mantine/hooks';
-import {Sidebar} from '@/components/Sidebar/Sidebar';
-import {MainColumn} from '@/components/layout/MainColumn';
+import { useSearchParams } from 'next/navigation';
+import { Box, Image, LoadingOverlay, Pagination } from '@mantine/core';
+import { useScrollIntoView } from '@mantine/hooks';
+import { Sidebar } from '@/components/Sidebar/Sidebar';
+import { MainColumn } from '@/components/layout/MainColumn';
 
 interface Comic {
     id: number;
@@ -22,10 +22,11 @@ export default function ComicListPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [visible, toggle] = useState(true);
     const searchParams = useSearchParams();
-    const {scrollIntoView, targetRef} = useScrollIntoView<HTMLDivElement>();
+    const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>();
     const category_id = searchParams.get('category_id');
 
-    const fetchComics = async () => {
+    const fetchComics = useCallback(async () => {
+        console.log('Fetching comics...');
         let url = `/comic/list?limit=12&page=${currentPage}`;
         if (category_id != null) {
             url += `&category_id=${category_id}`;
@@ -38,19 +39,43 @@ export default function ComicListPage() {
                 console.log('error');
             }
             setComics(data.message.comics);
-            toggle(false);
             setTotalPages(data.message.total_pages);
         } catch (error) {
+            console.error(error);
+        } finally {
+            toggle(false);
         }
+    }, [currentPage, category_id]);
+
+    const handlePageChange = (page: number) => {
+        console.log('Page Changed:', page);
+        setCurrentPage(page);
     };
 
+    const isInitialRender = useRef(true);
+
     useEffect(() => {
-        toggle(true);
-        fetchComics();
-        scrollIntoView();
-    }, [currentPage]);
-    // 创建一个包含 12 个空对象的数组
-    const emptyComics = Array.from({length: 12}, () => ({
+        if (isInitialRender.current) {
+            isInitialRender.current = false;
+            return;
+        }
+
+        let isMounted = true;
+
+        const fetchData = async () => {
+            toggle(true);
+            await fetchComics();
+            if (isMounted) toggle(false);
+        };
+
+        fetchData();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [fetchComics, currentPage, category_id]);
+
+    const emptyComics = Array.from({ length: 12 }, () => ({
         id: 0,
         name: '正在获取中',
         date: '请稍后',
@@ -58,7 +83,6 @@ export default function ComicListPage() {
         auto: 1,
     }));
 
-    // 如果 comics 数组为空，使用 emptyComics 替代
     const comicsWithFallback = comics.length > 0 ? comics : emptyComics;
 
     return (
@@ -70,10 +94,10 @@ export default function ComicListPage() {
                 >
                     <div className="relative mb-0">
                         <h1 className="m-0 flex">
-              <span className="inline-block text-[#242a36] text-base font-bold tracking-wide">
-                <i className="fa-solid fa-books"/>
-                漫画列表
-              </span>
+                            <span className="inline-block text-[#242a36] text-base font-bold tracking-wide">
+                                <i className="fa-solid fa-books" />
+                                杂志列表
+                            </span>
                         </h1>
                     </div>
                 </div>
@@ -87,32 +111,32 @@ export default function ComicListPage() {
                         }}
                     />
                     <div className="flex flex-wrap margin-[-5px] mt-[10px]">
-                        {comicsWithFallback.map((index, i) => (
+                        {comicsWithFallback.map((comic, i) => (
                             <div
-                                key={i}
+                                key={comic.id || i}
                                 className="comic max-w-none mt-0 mx-[5px] mb-[18px] rounded-md list-none transition-all hover:bg-slate-100 hover:scale-[1.02] ease-in-out"
-                                style={{width: 'calc(100% / 4 - 10px)'}}
+                                style={{ width: 'calc(100% / 4 - 10px)' }}
                             >
-                                <Link href={`/comic/${index.id}`}>
+                                <Link href={`/comic/${comic.id}`}>
                                     <figure className="rounded-md m-0 overflow-hidden relative">
-                    <span className="relative block h-0 w-full pt-[150%] overflow-hidden ">
-                      <Image
-                          alt="manga cover"
-                          className="object-cover !rounded-md h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2"
-                          height={134}
-                          src={index.cover || '/img/now_printing.webp'}
-                          width={96}
-                          fallbackSrc="/img/now_printing.webp"
-                      />
-                    </span>
+                                        <span className="relative block h-0 w-full pt-[150%] overflow-hidden">
+                                            <Image
+                                                alt="manga cover"
+                                                className="object-cover !rounded-md h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2"
+                                                height={134}
+                                                src={comic.cover || '/img/now_printing.webp'}
+                                                width={96}
+                                                fallbackSrc="/img/now_printing.webp"
+                                            />
+                                        </span>
                                     </figure>
                                 </Link>
                                 <p className="text-center whitespace-nowrap text-ellipsis text-[15px] h-[25px] font-normal overflow-hidden">
                                     <span className="text-[#ef4444]">*</span>
-                                    {index.name || '占位文本'}
+                                    {comic.name || '占位文本'}
                                 </p>
                                 <p className="mt-[8px] text-center whitespace-nowrap text-[#808080] text-[10px] font-normal">
-                                    {index.date || '占位文本'}发布
+                                    {comic.date || '占位文本'}发布
                                 </p>
                             </div>
                         ))}
@@ -122,11 +146,11 @@ export default function ComicListPage() {
                     className="flex justify-center"
                     total={totalPages}
                     value={currentPage}
-                    onChange={setCurrentPage}
+                    onChange={handlePageChange}
                     mt="sm"
                 />
             </MainColumn>
-            <Sidebar/>
+            <Sidebar />
         </>
     );
 }

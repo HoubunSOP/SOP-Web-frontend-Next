@@ -1,28 +1,7 @@
 'use client';
 import Link from 'next/link';
-import {useCallback, useState} from "react";
+import {useEffect, useState} from "react";
 import {fetchPosts} from "@/utils/api";
-
-const data = [
-    {
-        id: 4,
-        title: '测试ing',
-        date: '2023-11-13',
-        cover: 'https://s2.loli.net/2023/09/27/AGI8xiK5qPMj7ma.webp',
-        recommended: 1,
-        category_id: '5',
-        category_name: '未分类',
-    },
-    {
-        id: 3,
-        title: 'bug报告、功能相关建议/内容反馈✨',
-        date: '2023-09-27',
-        cover: 'https://s2.loli.net/2023/09/27/AGI8xiK5qPMj7ma.webp',
-        recommended: 1,
-        category_id: '',
-        category_name: '未分类',
-    },
-];
 
 interface Post {
     category_id: number;
@@ -34,12 +13,21 @@ interface Post {
 }
 
 export function PostList() {
-    const [articles, setPosts] = useState<Post[]>([]);
-    const loadFetch = useCallback(async () => {
-        const {items, total_pages, error} = await fetchPosts(1);
+    const [articles, setArticles] = useState<Post[]>([]);
 
-        setPosts(items);
-    })
+    useEffect(() => {
+        const loadFetch = async () => {
+            try {
+                const {items} = await fetchPosts(1);
+                setArticles(items);
+            } catch (error) {
+                console.error('获取文章失败:', error);
+            }
+        };
+
+        loadFetch();
+    }, []);
+
     return (
         <div>
             <div>
@@ -49,37 +37,43 @@ export function PostList() {
                     <i className="fa-solid fa-moon-stars"/>
                 </h3>
                 <div className="ContentContainer">
-                    {data.map((index) => (
-                        <div key={index.id}
-                             className="pt-[26px] pb-[15px] px-6 relative rounded-md flex flex-wrap overflow-hidden transition-all hover:bg-slate-100 hover:scale-[1.02] ease-in-out">
-                            <Link href={`/post/${index.id}`}
+                    {articles.map((article) => (
+                        <div
+                            key={article.id} // 使用唯一的 id 作为 key
+                            className="pt-[26px] pb-[15px] px-6 relative rounded-md flex flex-wrap overflow-hidden transition-all hover:bg-slate-100 hover:scale-[1.02] ease-in-out"
+                        >
+                            <Link href={`/post/${article.id}`}
                                   className="aText overflow-hidden h-[3.8rem] mr-5 text-sm font-medium line-clamp-3">
-                                {index.title}
+                                {article.title}
                             </Link>
                             <div
                                 className="justify-self-end ml-auto w-[120px] h-[72px] md:w-[142px] md:h-[88px] rounded-md overflow-hidden relative">
                                 <div className="h-full relative">
-                                    <Link href={`/post/${index.id}`}>
-                                        <img loading="lazy"
-                                             className="w-[100%] h-[100%] absolute top-0 left-0 object-cover"
-                                             src={index.cover} alt="post cover"/>
+                                    <Link href={`/post/${article.id}`}>
+                                        <img
+                                            loading="lazy"
+                                            className="w-[100%] h-[100%] absolute top-0 left-0 object-cover"
+                                            src={article.cover}
+                                            alt="post cover"
+                                        />
                                     </Link>
                                 </div>
                             </div>
                             <div className="absolute bottom-2.5">
-                                <Link href={`/list/post?${index.category_id}`}
-                                      className="text-xs md:text-sm font-medium tracking-wide text-[#808080]">
+                                <Link
+                                    href={`/list/post?category_id=${article.category_id}`} // 使用合适的查询参数
+                                    className="text-xs md:text-sm font-medium tracking-wide text-[#808080]"
+                                >
                                     <i className="fa-solid fa-list-tree"/>
-                                    {index.category_name}
+                                    {article.category_name}
                                 </Link>
                                 <span className="text-xs md:text-sm font-medium tracking-wide text-[#808080] pl-2">
-			                        <i className="fa-solid fa-calendar-week"/>
-                                    {index.date}
-		                        </span>
+                                    <i className="fa-solid fa-calendar-week"/>
+                                    {article.date}
+                                </span>
                             </div>
                         </div>
                     ))}
-                    <div className="bg-gray-200 rounded-full w-40 bottom-2.5 h-2 absolute"/>
                 </div>
             </div>
         </div>
