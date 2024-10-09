@@ -18,24 +18,31 @@ interface Comic {
 }
 
 export default function ComicListPage() {
-    const searchParams = useSearchParams();
-    const [totalPages, setTotalPages] = useState(1);
-    const [comics, setComics] = useState<Comic[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [visible, toggle] = useState(true);
-    const {scrollIntoView, targetRef} = useScrollIntoView<HTMLDivElement>();
     // 获取URL中的查询参数
+    const searchParams = useSearchParams();
     const category_id = searchParams.get('category_id');
     const pageParam = searchParams.get('p');
+    const initialPage = Number(pageParam);
+
+
+    const [totalPages, setTotalPages] = useState(1);
+    const [comics, setComics] = useState<Comic[]>([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [visible, toggle] = useState(true);
+    const {scrollIntoView, targetRef} = useScrollIntoView<HTMLDivElement>();
 
     useEffect(() => {
         if (pageParam) {
-            const initialPage = Number(pageParam);
+            console.log('pageParam', pageParam);
+            console.log('currentPage', currentPage);
+            console.log('initialPage', initialPage);
             if (initialPage !== currentPage) {
                 setCurrentPage(initialPage);
             }
+        } else if (currentPage === 0) {
+            setCurrentPage(1);
         }
-    }, []);
+    }, [currentPage, initialPage, pageParam]);
 
     const loadFetch = useCallback(async () => {
         toggle(true);
@@ -52,41 +59,47 @@ export default function ComicListPage() {
 
     useEffect(() => {
         const fetchLoad = async () => {
-            scrollIntoView();
+
             try {
                 toggle(true);
 
                 await loadFetch();
 
-                if (currentPage !== 1) {
+                if (currentPage !== 1 && initialPage !== currentPage) {
                     const queryParams = new URLSearchParams(window.location.search);
                     queryParams.set('p', String(currentPage));
                     const newUrl = `${window.location.pathname}?${queryParams.toString()}`;
                     window.history.replaceState(null, '', newUrl);
                 }
+                scrollIntoView();
             } catch (error) {
                 console.error('加载漫画失败:', error);
             }
         }
         const loadComics = async () => {
             if (pageParam) {
-                const initialPage = Number(pageParam);
-                if (initialPage !== currentPage) {
-                    await fetchLoad()
-                }
+                console.log("yes")
                 if (Number(pageParam) === 1) {
                     const queryParams = new URLSearchParams(window.location.search);
                     queryParams.delete('p');
                     await fetchLoad()
                 }
+                if (initialPage !== currentPage) {
+                    console.log("no")
+                    await fetchLoad()
+                }
             } else {
+                console.log("no")
                 await fetchLoad()
             }
         };
+        console.log(currentPage)
+        console.log("页面值：" + initialPage)
+        if (currentPage !== 0) {
+            loadComics();
+        }
 
-
-        loadComics();
-    }, [currentPage, fetchComics, scrollIntoView]);
+    }, [currentPage, loadFetch, pageParam, scrollIntoView]);
 
     // 创建一个包含 12 个空对象的数组
     const emptyComics = Array.from({length: 12}, () => ({

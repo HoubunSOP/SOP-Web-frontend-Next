@@ -1,12 +1,12 @@
 'use client';
 
-import React, {useEffect, useState, useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { Box, Image, LoadingOverlay, Pagination } from '@mantine/core';
-import { useScrollIntoView } from '@mantine/hooks';
-import { Sidebar } from '@/components/Sidebar/Sidebar';
-import { MainColumn } from '@/components/layout/MainColumn';
+import {useSearchParams} from 'next/navigation';
+import {Box, Image, LoadingOverlay, Pagination} from '@mantine/core';
+import {useScrollIntoView} from '@mantine/hooks';
+import {Sidebar} from '@/components/Sidebar/Sidebar';
+import {MainColumn} from '@/components/layout/MainColumn';
 
 interface Comic {
     id: number;
@@ -22,7 +22,7 @@ export default function ComicListPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [visible, toggle] = useState(true);
     const searchParams = useSearchParams();
-    const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>();
+    const {scrollIntoView, targetRef} = useScrollIntoView<HTMLDivElement>();
     const category_id = searchParams.get('category_id');
 
     const fetchComics = useCallback(async () => {
@@ -44,8 +44,19 @@ export default function ComicListPage() {
             console.error(error);
         } finally {
             toggle(false);
+            ScrollTo();
         }
     }, [currentPage, category_id]);
+    function ScrollTo() {
+        let scrollToptimer = setInterval(function() {
+            var top = document.body.scrollTop || document.documentElement.scrollTop;
+            var speed = top / 30;
+            document.documentElement.scrollTop -= speed;
+            if (top == 0) {
+                clearInterval(scrollToptimer);
+            }
+        }, 5);
+    }
 
     const handlePageChange = (page: number) => {
         console.log('Page Changed:', page);
@@ -68,14 +79,15 @@ export default function ComicListPage() {
             if (isMounted) toggle(false);
         };
 
-        fetchData();
+        fetchData().then(r => {
+        });
 
         return () => {
             isMounted = false;
         };
     }, [fetchComics, currentPage, category_id]);
 
-    const emptyComics = Array.from({ length: 12 }, () => ({
+    const emptyComics = Array.from({length: 12}, () => ({
         id: 0,
         name: '正在获取中',
         date: '请稍后',
@@ -95,7 +107,7 @@ export default function ComicListPage() {
                     <div className="relative mb-0">
                         <h1 className="m-0 flex">
                             <span className="inline-block text-[#242a36] text-base font-bold tracking-wide">
-                                <i className="fa-solid fa-books" />
+                                <i className="fa-solid fa-books"/>
                                 杂志列表
                             </span>
                         </h1>
@@ -115,7 +127,7 @@ export default function ComicListPage() {
                             <div
                                 key={comic.id || i}
                                 className="comic max-w-none mt-0 mx-[5px] mb-[18px] rounded-md list-none transition-all hover:bg-slate-100 hover:scale-[1.02] ease-in-out"
-                                style={{ width: 'calc(100% / 4 - 10px)' }}
+                                style={{width: 'calc(100% / 4 - 10px)'}}
                             >
                                 <Link href={`/comic/${comic.id}`}>
                                     <figure className="rounded-md m-0 overflow-hidden relative">
@@ -136,7 +148,7 @@ export default function ComicListPage() {
                                     {comic.name || '占位文本'}
                                 </p>
                                 <p className="mt-[8px] text-center whitespace-nowrap text-[#808080] text-[10px] font-normal">
-                                    {comic.date || '占位文本'}发布
+                                    {comic.date + '发布' || '占位文本'}
                                 </p>
                             </div>
                         ))}
@@ -150,7 +162,7 @@ export default function ComicListPage() {
                     mt="sm"
                 />
             </MainColumn>
-            <Sidebar />
+            <Sidebar/>
         </>
     );
 }
