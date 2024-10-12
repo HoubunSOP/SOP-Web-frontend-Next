@@ -2,11 +2,13 @@
 
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Link from 'next/link';
+import Image from 'next/image'
 import {useSearchParams} from 'next/navigation';
-import {Box, Image, LoadingOverlay, Pagination} from '@mantine/core';
+import {Box, LoadingOverlay, Pagination} from '@mantine/core';
 import {useScrollIntoView} from '@mantine/hooks';
 import {Sidebar} from '@/components/Sidebar/Sidebar';
 import {MainColumn} from '@/components/layout/MainColumn';
+import scrollToTop from "@/components/scrollToTop";
 
 interface Comic {
     id: number;
@@ -16,7 +18,7 @@ interface Comic {
     auto: number;
 }
 
-export default function ComicListPage() {
+export default function MagazineListPage() {
     const [totalPages, setTotalPages] = useState(1);
     const [comics, setComics] = useState<Comic[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -44,19 +46,9 @@ export default function ComicListPage() {
             console.error(error);
         } finally {
             toggle(false);
-            ScrollTo();
+            scrollToTop()
         }
     }, [currentPage, category_id]);
-    function ScrollTo() {
-        let scrollToptimer = setInterval(function() {
-            var top = document.body.scrollTop || document.documentElement.scrollTop;
-            var speed = top / 30;
-            document.documentElement.scrollTop -= speed;
-            if (top == 0) {
-                clearInterval(scrollToptimer);
-            }
-        }, 5);
-    }
 
     const handlePageChange = (page: number) => {
         console.log('Page Changed:', page);
@@ -89,10 +81,10 @@ export default function ComicListPage() {
 
     const emptyComics = Array.from({length: 12}, () => ({
         id: 0,
-        name: '正在获取中',
-        date: '请稍后',
-        cover: 'https://houbunsha.co.jp/img/mv_img/con_item_nPrn_1.png',
-        auto: 1,
+        name: 'Now loading...',
+        date: 'Getting Date...',
+        cover: '/images/loadingAni.webp',
+        auto: 0,
     }));
 
     const comicsWithFallback = comics.length > 0 ? comics : emptyComics;
@@ -116,6 +108,7 @@ export default function ComicListPage() {
                 <Box pos="relative">
                     <LoadingOverlay
                         visible={visible}
+                        transitionProps={{transition: 'fade', duration: 10}}
                         zIndex={1000}
                         overlayProps={{
                             radius: 'sm',
@@ -136,19 +129,21 @@ export default function ComicListPage() {
                                                 alt="manga cover"
                                                 className="object-cover !rounded-md h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2"
                                                 height={134}
-                                                src={comic.cover || '/img/now_printing.webp'}
+                                                src={comic.cover || '/images/now_printing.webp'}
                                                 width={96}
-                                                fallbackSrc="/img/now_printing.webp"
+                                                loading={"lazy"}
+                                                placeholder={'blur'}
+                                                blurDataURL={'/images/loadingAni.webp'}
                                             />
                                         </span>
                                     </figure>
                                 </Link>
                                 <p className="text-center whitespace-nowrap text-ellipsis text-[15px] h-[25px] font-normal overflow-hidden">
                                     <span className="text-[#ef4444]">*</span>
-                                    {comic.name || '占位文本'}
+                                    {comic.name || 'Now Loading...'}
                                 </p>
                                 <p className="mt-[8px] text-center whitespace-nowrap text-[#808080] text-[10px] font-normal">
-                                    {comic.date + '发布' || '占位文本'}
+                                    {comic.date + '发布' || 'Now Loading...'}
                                 </p>
                             </div>
                         ))}

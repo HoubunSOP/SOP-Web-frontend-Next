@@ -10,6 +10,16 @@ const nextConfig = {
         // Will be available on both server and client
 
     },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'houbunsha.co.jp',
+                port: '',
+                pathname: '/**',
+            },
+        ],
+    },
 };
 
 export default nextConfig;
