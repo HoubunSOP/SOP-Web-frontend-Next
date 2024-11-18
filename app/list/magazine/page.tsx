@@ -20,15 +20,15 @@ interface Comic {
 
 export default function MagazineListPage() {
     const [totalPages, setTotalPages] = useState(1);
-    const [comics, setComics] = useState<Comic[]>([]);
+    const [magazines, setMagazines] = useState<Comic[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [visible, toggle] = useState(true);
     const searchParams = useSearchParams();
     const {scrollIntoView, targetRef} = useScrollIntoView<HTMLDivElement>();
     const category_id = searchParams.get('category_id');
 
-    const fetchComics = useCallback(async () => {
-        console.log('Fetching comics...');
+    const fetchMagazines = useCallback(async () => {
+        console.log('Fetching magazines...');
         let url = `/comic/list?limit=12&page=${currentPage}`;
         if (category_id != null) {
             url += `&category_id=${category_id}`;
@@ -40,7 +40,7 @@ export default function MagazineListPage() {
             if (data.status === 'error') {
                 console.log('error');
             }
-            setComics(data.message.comics);
+            setMagazines(data.message.comics);
             setTotalPages(data.message.total_pages);
         } catch (error) {
             console.error(error);
@@ -51,7 +51,6 @@ export default function MagazineListPage() {
     }, [currentPage, category_id]);
 
     const handlePageChange = (page: number) => {
-        console.log('Page Changed:', page);
         setCurrentPage(page);
     };
 
@@ -67,7 +66,7 @@ export default function MagazineListPage() {
 
         const fetchData = async () => {
             toggle(true);
-            await fetchComics();
+            await fetchMagazines();
             if (isMounted) toggle(false);
         };
 
@@ -77,9 +76,9 @@ export default function MagazineListPage() {
         return () => {
             isMounted = false;
         };
-    }, [fetchComics, currentPage, category_id]);
+    }, [fetchMagazines, currentPage, category_id]);
 
-    const emptyComics = Array.from({length: 12}, () => ({
+    const emptyMagazines = Array.from({length: 12}, () => ({
         id: 0,
         name: 'Now loading...',
         date: 'Getting Date...',
@@ -87,7 +86,7 @@ export default function MagazineListPage() {
         auto: 0,
     }));
 
-    const comicsWithFallback = comics.length > 0 ? comics : emptyComics;
+    const magazinesWithFallback = magazines.length > 0 ? magazines : emptyMagazines;
 
     return (
         <>
@@ -116,7 +115,7 @@ export default function MagazineListPage() {
                         }}
                     />
                     <div className="flex flex-wrap margin-[-5px] mt-[10px]">
-                        {comicsWithFallback.map((comic, i) => (
+                        {magazinesWithFallback.map((comic, i) => (
                             <div
                                 key={comic.id || i}
                                 className="comic max-w-none mt-0 mx-[5px] mb-[18px] rounded-md list-none transition-all hover:bg-slate-100 hover:scale-[1.02] ease-in-out"

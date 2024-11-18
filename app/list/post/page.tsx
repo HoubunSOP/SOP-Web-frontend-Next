@@ -8,6 +8,7 @@ import {Sidebar} from '@/components/Sidebar/Sidebar';
 import {MainColumn} from '@/components/layout/MainColumn';
 import {useSearchParams} from "next/navigation";
 import {fetchPosts} from "@/utils/api";
+import {PostListLoading} from "@/components/index/PostList.loading";
 
 interface Post {
     category_id: number;
@@ -25,7 +26,7 @@ export default function PostListPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [visible, toggle] = useState(true);
     const {scrollIntoView, targetRef} = useScrollIntoView<HTMLDivElement>();
-
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     // 获取URL中的查询参数
     const category_id = searchParams.get('category_id');
     const pageParam = searchParams.get('p');
@@ -41,7 +42,7 @@ export default function PostListPage() {
 
     const loadFetch = useCallback(async () => {
         toggle(true);
-        const { items, total_pages, error } = await fetchPosts(currentPage, category_id);
+        const {items, total_pages, error} = await fetchPosts(currentPage, category_id);
         if (error) {
             setCurrentPage(1);
             return;
@@ -65,6 +66,8 @@ export default function PostListPage() {
                 window.history.replaceState(null, '', newUrl);
             } catch (error) {
                 console.error('加载文章失败:', error);
+            } finally {
+                setIsLoading(false);
             }
         }
         const loadPosts = async () => {
@@ -100,38 +103,41 @@ export default function PostListPage() {
                     </h1>
                 </div>
                 <div>
-                    {articles.map((article) => (
-                        <Link href={`/post/${article.id}`} key={article.id} passHref>
-                            <div
-                                className="pt-6 pb-4 px-6 relative rounded-md flex flex-wrap overflow-hidden transition-all hover:bg-slate-100 hover:scale-105 ease-in-out">
-                                <p className="overflow-hidden h-16 mr-5 text-sm font-medium line-clamp-3" style={{
-                                    width: 'calc(100%-162px)'
-                                }}>
-                                    {article.title}
-                                </p>
+                    {isLoading ? (
+                        <PostListLoading/>
+                    ) : (
+                        articles.map((article) => (
+                            <Link href={`/post/${article.id}`} key={article.id} passHref>
                                 <div
-                                    className="justify-self-end ml-auto w-30 h-18 md:w-36 md:h-22 rounded-md overflow-hidden relative">
-                                    <Image
-                                        src={article.cover}
-                                        alt="post cover"
-                                    />
-                                </div>
-                                <div className="absolute bottom-2.5">
-                                    <Link className="mr-2"
-                                          href={{pathname: '/list/post', query: {c: article.category_id}}}>
+                                    className="pt-6 pb-4 px-6 relative rounded-md flex flex-wrap overflow-hidden transition-all hover:bg-slate-100 hover:scale-105 ease-in-out">
+                                    <p className="overflow-hidden h-16 mr-5 text-sm font-medium line-clamp-3" style={{
+                                        width: 'calc(100%-162px)'
+                                    }}>
+                                        {article.title}
+                                    </p>
+                                    <div
+                                        className="justify-self-end ml-auto w-30 h-18 md:w-36 md:h-22 rounded-md overflow-hidden relative">
+                                        <Image
+                                            src={article.cover}
+                                            alt="post cover"
+                                        />
+                                    </div>
+                                    <div className="absolute bottom-2.5">
+                                        <Link className="mr-2"
+                                              href={{pathname: '/list/post', query: {category_id: article.category_id}}}>
                                         <span className="text-xs md:text-sm tracking-wide text-gray-500">
                                             <i className="fa-solid fa-list-ul mr-1"></i>
                                             {article.category_name}
                                         </span>
-                                    </Link>
-                                    <span className="text-xs md:text-sm tracking-wide text-gray-500">
+                                        </Link>
+                                        <span className="text-xs md:text-sm tracking-wide text-gray-500">
                                         <i className="fa-solid fa-calendar-week mr-1"></i>
-                                        {article.date}
+                                            {article.date}
                                     </span>
+                                    </div>
                                 </div>
-                            </div>
-                        </Link>
-                    ))}
+                            </Link>
+                        )))}
                 </div>
                 <Pagination
                     className="flex justify-center mt-10"
