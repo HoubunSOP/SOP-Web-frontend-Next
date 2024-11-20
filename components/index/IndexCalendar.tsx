@@ -30,6 +30,7 @@ function IndexCalendar() {
         <Calendar
             static
             locale="zh-cn"
+            className="px-3 pb-3"
             defaultDate={new Date()}
             renderDay={(date) => {
                 const day = date.getDate();

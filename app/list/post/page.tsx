@@ -151,6 +151,5 @@ export default function PostListPage() {
             </MainColumn>
             <Sidebar/>
         </>
-    )
-        ;
+    );
 }

@@ -43,3 +43,4 @@ export const fetchPosts = async (page: number, category_id?: string | null) => {
         return { items: [], total_pages: 1, error: true };
     }
 };
+
