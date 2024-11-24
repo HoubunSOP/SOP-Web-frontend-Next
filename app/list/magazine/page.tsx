@@ -29,19 +29,19 @@ export default function MagazineListPage() {
 
     const fetchMagazines = useCallback(async () => {
         console.log('Fetching magazines...');
-        let url = `/comic/list?limit=12&page=${currentPage}`;
+        let url = `/list/comics?limit=12&page=${currentPage}`;
         if (category_id != null) {
             url += `&category_id=${category_id}`;
         }
 
         try {
-            const response = await fetch(`https://api.fwgxt.top/api/${url}`);
+            const response = await fetch(`http://127.0.0.1:8000${url}`);
             const data = await response.json();
             if (data.status === 'error') {
                 console.log('error');
             }
-            setMagazines(data.message.comics);
-            setTotalPages(data.message.total_pages);
+            setMagazines(data.detail.items);
+            setTotalPages(data.detail.total_pages);
         } catch (error) {
             console.error(error);
         } finally {

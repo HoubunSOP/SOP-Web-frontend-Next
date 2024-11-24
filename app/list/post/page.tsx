@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Link from 'next/link';
 import {Image, Pagination} from '@mantine/core';
 import {useScrollIntoView} from '@mantine/hooks';
@@ -9,6 +9,7 @@ import {MainColumn} from '@/components/layout/MainColumn';
 import {useSearchParams} from "next/navigation";
 import {fetchPosts} from "@/utils/api";
 import {PostListLoading} from "@/components/index/PostList.loading";
+import scrollToTop from "@/components/scrollToTop";
 
 interface Post {
     category_id: number;
@@ -29,67 +30,59 @@ export default function PostListPage() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     // 获取URL中的查询参数
     const category_id = searchParams.get('category_id');
-    const pageParam = searchParams.get('p');
+
+    const fetchArticles = useCallback(async () => {
+        setIsLoading(true)
+        console.log('Fetching articles...');
+        let url = `/list/articles?limit=12&page=${currentPage}`;
+        if (category_id != null) {
+            url += `&category_id=${category_id}`;
+        }
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000${url}`);
+            const data = await response.json();
+            if (data.status !== 200) {
+                console.log('error');
+            }
+            setIsLoading(false)
+            setPosts(data.detail.items);
+            setTotalPages(data.detail.total_pages);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            toggle(false);
+            scrollToTop()
+        }
+    }, [currentPage, category_id]);
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
+
+    const isInitialRender = useRef(true);
 
     useEffect(() => {
-        if (pageParam) {
-            const initialPage = Number(pageParam);
-            if (initialPage !== currentPage) {
-                setCurrentPage(initialPage);
-            }
-        }
-    }, []);
-
-    const loadFetch = useCallback(async () => {
-        toggle(true);
-        const {items, total_pages, error} = await fetchPosts(currentPage, category_id);
-        if (error) {
-            setCurrentPage(1);
+        if (isInitialRender.current) {
+            isInitialRender.current = false;
             return;
         }
 
-        setPosts(items);
-        toggle(false);
-        setTotalPages(total_pages);
-    }, [currentPage, category_id]);
+        let isMounted = true;
 
-    useEffect(() => {
-        const fetchLoad = async () => {
-            try {
-                toggle(true);
-                await loadFetch();
-                scrollIntoView();
-
-                const queryParams = new URLSearchParams(window.location.search);
-                queryParams.set('p', String(currentPage));
-                const newUrl = `${window.location.pathname}?${queryParams.toString()}`;
-                window.history.replaceState(null, '', newUrl);
-            } catch (error) {
-                console.error('加载文章失败:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        }
-        const loadPosts = async () => {
-            if (pageParam) {
-                const initialPage = Number(pageParam);
-                if (initialPage !== currentPage) {
-                    await fetchLoad()
-                }
-                if (Number(pageParam) === 1) {
-                    const queryParams = new URLSearchParams(window.location.search);
-                    queryParams.delete('p');
-                    await fetchLoad()
-                }
-            } else {
-                await fetchLoad()
-            }
+        const fetchData = async () => {
+            toggle(true);
+            await fetchArticles();
+            if (isMounted) toggle(false);
         };
 
+        fetchData().then(r => {
+        });
 
-        loadPosts();
-    }, [currentPage, fetchPosts, scrollIntoView]);
-
+        return () => {
+            isMounted = false;
+        };
+    }, [fetchArticles, currentPage, category_id]);
     return (
         <>
             <MainColumn>
@@ -110,11 +103,11 @@ export default function PostListPage() {
                             <Link href={`/post/${article.id}`} key={article.id} passHref>
                                 <div
                                     className="pt-6 pb-4 px-6 relative rounded-md flex flex-wrap overflow-hidden transition-all hover:bg-slate-100 hover:scale-105 ease-in-out">
-                                    <p className="overflow-hidden h-16 mr-5 text-sm font-medium line-clamp-3" style={{
+                                    <h2 className="overflow-hidden h-16 mr-5 text-md font-medium line-clamp-3" style={{
                                         width: 'calc(100%-162px)'
                                     }}>
                                         {article.title}
-                                    </p>
+                                    </h2>
                                     <div
                                         className="justify-self-end ml-auto w-30 h-18 md:w-36 md:h-22 rounded-md overflow-hidden relative">
                                         <Image
@@ -124,10 +117,13 @@ export default function PostListPage() {
                                     </div>
                                     <div className="absolute bottom-2.5">
                                         <Link className="mr-2"
-                                              href={{pathname: '/list/post', query: {category_id: article.category_id}}}>
+                                              href={{
+                                                  pathname: '/list/post',
+                                                  query: {category_id: article.categories[0].id}
+                                              }}>
                                         <span className="text-xs md:text-sm tracking-wide text-gray-500">
                                             <i className="fa-solid fa-list-ul mr-1"></i>
-                                            {article.category_name}
+                                            {article.categories[0].name}
                                         </span>
                                         </Link>
                                         <span className="text-xs md:text-sm tracking-wide text-gray-500">
@@ -143,7 +139,7 @@ export default function PostListPage() {
                     className="flex justify-center mt-10"
                     total={totalPages}
                     value={currentPage}
-                    onChange={setCurrentPage}
+                    onChange={handlePageChange}
                     color="indigo"
                     radius="md"
                     withEdges

@@ -3,16 +3,7 @@ import React from 'react';
 import {PhotoProvider, PhotoView} from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
 import {Image} from "@mantine/core";
-
-interface Data {
-    post_id: Number;
-    post_name: string;
-    post_date: string;
-    post_content: string;
-    post_cover: string;
-    categories: string[];
-
-}
+import {ArticleDetail} from "@/type/article";
 
 const extractImageUrls = (html: string) => {
     const imgRegex = /<p[^>]*><img[^>]+src="([^">]+)"/g;
@@ -46,9 +37,9 @@ const renderTag = ({tag, imageUrls, cindex}: { tag: string, imageUrls: string[],
     return <div key={cindex} dangerouslySetInnerHTML={{__html: tag}}/>;
 };
 
-const PostRender = ({data}: { data: Data }) => {
-    const imageUrls = extractImageUrls(data.post_content);
-    const tags = extractTags(data.post_content);
+const PostRender = ({data}: { data: ArticleDetail }) => {
+    const imageUrls = extractImageUrls(data.detail.content);
+    const tags = extractTags(data.detail.content);
 
     return (
         <PhotoProvider maskOpacity={0.5}>

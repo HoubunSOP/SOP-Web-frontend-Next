@@ -18,6 +18,12 @@ const nextConfig = {
                 port: '',
                 pathname: '/**',
             },
+            {
+                protocol: 'http',
+                hostname: 'www.dokidokivisual.com',
+                port: '',
+                pathname: '/**',
+            },
         ],
     },
 };

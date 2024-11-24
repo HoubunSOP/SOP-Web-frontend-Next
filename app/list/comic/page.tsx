@@ -29,19 +29,20 @@ export default function ComicListPage() {
 
     const fetchComics = useCallback(async () => {
         console.log('Fetching comics...');
-        let url = `/comic/list?limit=12&page=${currentPage}`;
+        let url = `/list/comics?limit=12&page=${currentPage}`;
         if (category_id != null) {
             url += `&category_id=${category_id}`;
         }
 
         try {
-            const response = await fetch(`https://api.fwgxt.top/api/${url}`);
+            const response = await fetch(`http://127.0.0.1:8000${url}`);
             const data = await response.json();
             if (data.status === 'error') {
                 console.log('error');
             }
-            setComics(data.message.comics);
-            setTotalPages(data.message.total_pages);
+            setComics(data.detail.items);
+            console.log(comics);
+            setTotalPages(data.detail.total_pages);
         } catch (error) {
             console.error(error);
         } finally {
