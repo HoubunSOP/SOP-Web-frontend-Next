@@ -4,16 +4,15 @@ import {useEffect, useState} from "react";
 import {PostListLoading} from "@/components/index/PostList.loading";
 import {Detail} from "@/type/article";
 import './PostList.css'
+import {fetchArticles} from "@/utils/api";
 
 export function PostList() {
     const [articles, setArticles] = useState<Detail[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     useEffect(() => {
         const loadFetch = async () => {
-            const url = `/list/articles`;
             try {
-                const response = await fetch(`http://127.0.0.1:8000${url}`);
-                const data = await response.json()
+                const data = await fetchArticles(1)
                 setArticles(data.detail.items);
             } catch (error) {
                 console.error('获取文章失败:', error);

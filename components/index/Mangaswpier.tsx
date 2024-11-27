@@ -4,58 +4,12 @@ import {useDisclosure} from '@mantine/hooks';
 import {Box, Image, LoadingOverlay} from '@mantine/core';
 import {Swiper, SwiperSlide} from 'swiper/react';
 import './Mangaswpier.css';
-
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/scrollbar';
 import {Scrollbar} from 'swiper/modules';
 import {useEffect, useState} from "react";
 import {NewComisDetail} from "@/type/comic";
-
-const objData = [
-    {
-        id: 0,
-        name: 'test',
-        date: '2024-1-2',
-        mv_img: '/images/label_6.webp',
-        cover: '/images/now_printing.webp',
-    },
-    {
-        id: 1,
-        name: 'qwq',
-        date: '2024-1-2',
-        mv_img: '/images/label_4.webp',
-        cover: '/images/now_printing.webp',
-    },
-    {
-        id: 2,
-        name: 'qwq',
-        date: '2024-1-2',
-        mv_img: '/images/label_4.webp',
-        cover: '/images/now_printing.webp',
-    },
-    {
-        id: 3,
-        name: 'qwq',
-        date: '2024-1-2',
-        mv_img: '/images/label_4.webp',
-        cover: '/images/now_printing.webp',
-    },
-    {
-        id: 4,
-        name: 'qwq',
-        date: '2024-1-2',
-        mv_img: '/images/label_4.webp',
-        cover: '/images/now_printing.webp',
-    },
-    {
-        id: 5,
-        name: 'qwq',
-        date: '2024-1-2',
-        mv_img: '/images/label_4.webp',
-        cover: '/images/now_printing.webp',
-    },
-];
+import {fetchNewComics} from "@/utils/api";
 
 const formatTime = (time: string) => time.slice(5).replace(/-/g, '/');
 
@@ -74,17 +28,15 @@ export function Mangaswiper() {
     const [visible, {toggle}] = useDisclosure(true);
     const [newComicsDetail, setNewComicsDetail] = useState<NewComisDetail[]>([]);
     useEffect(() => {
-        const fetchNewComics = async () => {
-            const url = `/new_comics`;
+        const fetchNewComicsAPI = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000${url}`);
-                const data = (await response.json());
-                setNewComicsDetail(data.detail);
+                const data = await fetchNewComics();
+                setNewComicsDetail(data);
             } catch (error) {
                 console.error('Failed to fetch data', error);
             }
         };
-        fetchNewComics();
+        fetchNewComicsAPI();
     }, []);
     return (
         <div>
@@ -93,7 +45,7 @@ export function Mangaswiper() {
           未来发售的单行本 <i data-v-ac73f5b4="" className="fa-solid fa-telescope"/>
         </span>
             </div>
-            <Box pos="relative">
+            <Box pos="relative" className="h-[256px]">
                 <LoadingOverlay
                     visible={visible}
                     zIndex={1000}

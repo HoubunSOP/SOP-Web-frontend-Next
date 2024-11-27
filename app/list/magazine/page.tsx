@@ -9,31 +9,23 @@ import {useScrollIntoView} from '@mantine/hooks';
 import {Sidebar} from '@/components/Sidebar/Sidebar';
 import {MainColumn} from '@/components/layout/MainColumn';
 import scrollToTop from "@/components/scrollToTop";
-import {Detail} from "@/type/mangazine";
+import {MangazineItem} from "@/type/mangazine";
+import {fetchMagazines} from "@/utils/api";
 
 
 export default function MagazineListPage() {
     const [totalPages, setTotalPages] = useState(1);
-    const [magazines, setMagazines] = useState<Detail[]>([]);
+    const [magazines, setMagazines] = useState<MangazineItem[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [visible, toggle] = useState(true);
     const searchParams = useSearchParams();
     const {scrollIntoView, targetRef} = useScrollIntoView<HTMLDivElement>();
     const category_id = searchParams.get('category_id');
 
-    const fetchMagazines = useCallback(async () => {
+    const fetchMagazinesAPI = useCallback(async () => {
         console.log('Fetching magazines...');
-        let url = `/list/magazines?limit=12&page=${currentPage}`;
-        if (category_id != null) {
-            url += `&category_id=${category_id}`;
-        }
-
         try {
-            const response = await fetch(`http://127.0.0.1:8000${url}`);
-            const data = await response.json();
-            if (data.status !== 200) {
-                console.log('error');
-            }
+            const data = await fetchMagazines(currentPage, category_id);
             setMagazines(data.detail.items);
             setTotalPages(data.detail.total_pages);
             scrollIntoView()
@@ -61,7 +53,7 @@ export default function MagazineListPage() {
 
         const fetchData = async () => {
             toggle(true);
-            await fetchMagazines();
+            await fetchMagazinesAPI();
             if (isMounted) toggle(false);
         };
 
@@ -71,7 +63,7 @@ export default function MagazineListPage() {
         return () => {
             isMounted = false;
         };
-    }, [fetchMagazines, currentPage, category_id]);
+    }, [fetchMagazinesAPI, currentPage, category_id]);
 
     const emptyMagazines = Array.from({length: 12}, () => ({
         id: 0,

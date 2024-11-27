@@ -8,24 +8,14 @@ import {ComicDetail} from "@/type/comic";
 import Link from "next/link";
 import {MangazineDetail} from "@/type/mangazine";
 import MangazineInfo from "@/components/mangazine/MangazineInfo";
+import {fetchMagazineDetail} from "@/utils/api";
 
 const PhotoClientComponent = dynamic(() => import('@/components/ImageView'), {
     ssr: false,
 });
 
 export default async function Content({id}: { id: number }) {
-    // revalidate表示在指定的秒数内缓存请求，和pages目录中revalidate配置相同
-    const res = await fetch(`http://127.0.0.1:8000/magazines/${id}`, {
-        next: {
-            revalidate: 60,
-            tags: ['collection'],
-        },
-        headers: {'Content-Type': 'application/json', 'user-agent': 'HoubunSOPWebResponse'},
-    });
-    const data = (await res.json()) as MangazineDetail
-    if (data.status !== 200) {
-        redirect('/not-found');
-    }
+    const data = (await fetchMagazineDetail(id)) as MangazineDetail
 
     return (
         <div className="p-6 overflow-hidden box-border relative">

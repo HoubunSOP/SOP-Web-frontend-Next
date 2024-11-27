@@ -8,6 +8,7 @@ import {Box, LoadingOverlay, Pagination} from '@mantine/core';
 import {useScrollIntoView} from '@mantine/hooks';
 import {Sidebar} from '@/components/Sidebar/Sidebar';
 import {MainColumn} from '@/components/layout/MainColumn';
+import {fetchComics} from "@/utils/api";
 
 interface Comic {
     id: number;
@@ -26,19 +27,10 @@ export default function ComicListPage() {
     const {scrollIntoView, targetRef} = useScrollIntoView<HTMLDivElement>();
     const category_id = searchParams.get('category_id');
 
-    const fetchComics = useCallback(async () => {
+    const fetchComicsAPI = useCallback(async () => {
         console.log('Fetching comics...');
-        let url = `/list/comics?limit=12&page=${currentPage}`;
-        if (category_id != null) {
-            url += `&category_id=${category_id}`;
-        }
-
         try {
-            const response = await fetch(`http://127.0.0.1:8000${url}`);
-            const data = await response.json();
-            if (data.status !== 200) {
-                console.log('error');
-            }
+            const data = await fetchComics(currentPage, category_id);
             setComics(data.detail.items);
             console.log(comics);
             setTotalPages(data.detail.total_pages);
@@ -67,7 +59,7 @@ export default function ComicListPage() {
 
         const fetchData = async () => {
             toggle(true);
-            await fetchComics();
+            await fetchComicsAPI();
             if (isMounted) toggle(false);
         };
 
@@ -77,7 +69,7 @@ export default function ComicListPage() {
         return () => {
             isMounted = false;
         };
-    }, [fetchComics, currentPage, category_id]);
+    }, [fetchComicsAPI, currentPage, category_id]);
 
     const emptyComics = Array.from({length: 12}, () => ({
         id: 0,

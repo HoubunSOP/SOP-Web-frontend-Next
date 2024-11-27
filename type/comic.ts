@@ -5,15 +5,16 @@ export interface Category {
 
 export interface Detail {
     id: number;
-    title: string;
+    name: string;
     date: string;
     cover: string;
-    content: string;
+    intro: string;
+    volume : number;
+    isbn: number;
+    auto: boolean;
     author: {
         id: number;
-        username: string;
-        user_avatar: string;
-        user_bio: string;
+        name: string;
     };
     categories: Category[];
 }

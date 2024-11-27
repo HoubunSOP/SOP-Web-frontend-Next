@@ -4,17 +4,16 @@ import {useEffect, useState} from "react";
 import {PostListLoading} from "@/components/index/PostList.loading";
 import {Detail} from "@/type/article";
 import './RecommendedPost.css'
+import {fetchRecommendedArticles} from "@/utils/api";
 
 export function RecommendedPost() {
     const [articles, setArticles] = useState<Detail[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     useEffect(() => {
         const loadFetch = async () => {
-            const url = `/recommended`;
             try {
-                const response = await fetch(`http://127.0.0.1:8000${url}`);
-                const data = await response.json()
-                setArticles(data.detail);
+                const data = await fetchRecommendedArticles()
+                setArticles(data);
             } catch (error) {
                 console.error('获取文章失败:', error);
             } finally {

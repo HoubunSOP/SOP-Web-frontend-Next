@@ -9,6 +9,7 @@ import {MainColumn} from '@/components/layout/MainColumn';
 import {useSearchParams} from "next/navigation";
 import {PostListLoading} from "@/components/index/PostList.loading";
 import {Detail} from "@/type/article";
+import {fetchArticles, fetchMagazines} from "@/utils/api";
 
 
 export default function PostListPage() {
@@ -22,17 +23,11 @@ export default function PostListPage() {
     // 获取URL中的查询参数
     const category_id = searchParams.get('category_id');
 
-    const fetchArticles = useCallback(async () => {
+    const fetchArticlesAPI = useCallback(async () => {
         setIsLoading(true)
         console.log('Fetching articles...');
-        let url = `/list/articles?limit=12&page=${currentPage}`;
-        if (category_id != null) {
-            url += `&category_id=${category_id}`;
-        }
-
         try {
-            const response = await fetch(`http://127.0.0.1:8000${url}`);
-            const data = await response.json();
+            const data = await fetchArticles(currentPage, category_id);
             if (data.status !== 200) {
                 console.log('error');
             }
@@ -64,7 +59,7 @@ export default function PostListPage() {
 
         const fetchData = async () => {
             toggle(true);
-            await fetchArticles();
+            await fetchArticlesAPI();
             if (isMounted) toggle(false);
         };
 
@@ -74,7 +69,7 @@ export default function PostListPage() {
         return () => {
             isMounted = false;
         };
-    }, [fetchArticles, currentPage, category_id]);
+    }, [fetchArticlesAPI, currentPage, category_id]);
     return (
         <>
             <MainColumn>

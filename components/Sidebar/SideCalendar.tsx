@@ -4,22 +4,22 @@ import {IconNotebook} from '@tabler/icons-react';
 import 'dayjs/locale/zh-cn';
 import '../index/IndexCalendar.css';
 import {useEffect, useState} from 'react';
+import {fetchCalendar} from "@/utils/api";
 
 function SideCalendar() {
     const [calendarDetail, setCalendarDetail] = useState<CalendarDetail | null>(null);
 
     useEffect(() => {
-        const fetchCalendar = async () => {
-            const url = `/calendar`;
+        const loadFetch = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000${url}`);
-                const data = (await response.json()) as CalendarDetail;
+                const data = await fetchCalendar();
                 setCalendarDetail(data);
+                console.log(calendarDetail);
             } catch (error) {
                 console.error('Failed to fetch calendar data', error);
             }
         };
-        fetchCalendar();
+        loadFetch();
     }, []);
 
     // Group comics by date

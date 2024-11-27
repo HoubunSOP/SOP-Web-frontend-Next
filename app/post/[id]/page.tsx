@@ -14,6 +14,7 @@ const Sidebar = dynamic(() => import('@/components/Sidebar/Sidebar'), {
 });
 export default async function PostPage({params}: { params: { id: Number } }) {
     const {id} = params;
+    // @ts-ignore
     const data = (await fetchArticleDetail(id)) as ArticleDetail
     return (
         <>
