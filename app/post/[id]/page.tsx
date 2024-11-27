@@ -2,28 +2,19 @@ import {Image} from '@mantine/core';
 import {redirect} from 'next/navigation';
 import {MainColumn} from '@/components/layout/MainColumn';
 import '../globals.css';
-import {Sidebar} from '@/components/Sidebar/Sidebar';
 import dynamic from "next/dynamic";
 import {ArticleDetail} from "@/type/article";
+import {fetchArticleDetail} from "@/utils/api";
 
 const PostRenderComponent = dynamic(() => import('@/components/PostRender'), {
     ssr: false,
 });
+const Sidebar = dynamic(() => import('@/components/Sidebar/Sidebar'), {
+    ssr: false,
+});
 export default async function PostPage({params}: { params: { id: Number } }) {
     const {id} = params;
-    // revalidate表示在指定的秒数内缓存请求，和pages目录中revalidate配置相同
-    const res = await fetch(`http://127.0.0.1:8000/articles/${id}`, {
-        next: {
-            revalidate: 60,
-            tags: ['collection'],
-        },
-        headers: {'Content-Type': 'application/json', 'user-agent': 'HoubunSOPWebResponse'},
-    });
-    const data = (await res.json()) as ArticleDetail
-    if (data.status !== 200) {
-        redirect('/not-found');
-    }
-
+    const data = (await fetchArticleDetail(id)) as ArticleDetail
     return (
         <>
             <MainColumn>
@@ -44,7 +35,8 @@ export default async function PostPage({params}: { params: { id: Number } }) {
                         </h1>
                         <div
                             className="mb-6 text-center bg-[#F5F5F5] max-w-[100%] h-40 md:h-60 rounded-md top-0 left-0 object-cover inline">
-                            <Image className="w-full object-cover" radius="md" src={data.detail.cover} alt="post cover"/>
+                            <Image className="w-full object-cover" radius="md" src={data.detail.cover}
+                                   alt="post cover"/>
                         </div>
                     </header>
                     <div id="post-content">

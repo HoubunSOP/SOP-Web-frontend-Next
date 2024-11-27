@@ -7,23 +7,14 @@ import {useScrollIntoView} from '@mantine/hooks';
 import {Sidebar} from '@/components/Sidebar/Sidebar';
 import {MainColumn} from '@/components/layout/MainColumn';
 import {useSearchParams} from "next/navigation";
-import {fetchPosts} from "@/utils/api";
 import {PostListLoading} from "@/components/index/PostList.loading";
-import scrollToTop from "@/components/scrollToTop";
+import {Detail} from "@/type/article";
 
-interface Post {
-    category_id: number;
-    category_name: string;
-    id: number;
-    title: string;
-    date: string;
-    cover: string;
-}
 
 export default function PostListPage() {
     const searchParams = useSearchParams();
     const [totalPages, setTotalPages] = useState(1);
-    const [articles, setPosts] = useState<Post[]>([]);
+    const [articles, setPosts] = useState<Detail[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [visible, toggle] = useState(true);
     const {scrollIntoView, targetRef} = useScrollIntoView<HTMLDivElement>();
@@ -48,11 +39,12 @@ export default function PostListPage() {
             setIsLoading(false)
             setPosts(data.detail.items);
             setTotalPages(data.detail.total_pages);
+            scrollIntoView()
         } catch (error) {
             console.error(error);
         } finally {
             toggle(false);
-            scrollToTop()
+            scrollIntoView()
         }
     }, [currentPage, category_id]);
 
@@ -87,6 +79,7 @@ export default function PostListPage() {
         <>
             <MainColumn>
                 <div
+                    ref={targetRef}
                     className="px-[22px] pt-[18px] border-b-[2px] border-gray-200 overflow-hidden bg-white box-border relative mb-3">
                     <h1 className="m-0 flex">
                             <span className="inline-block text-gray-900 text-xl font-bold tracking-wide">

@@ -1,4 +1,3 @@
-import {List} from 'postcss/lib/list';
 import {Alert, Skeleton} from "@mantine/core";
 import {ComicDetail} from "@/type/comic";
 import React from "react";
@@ -50,7 +49,12 @@ export default function ComicInfo({data, loading = false,}: { data?: ComicDetail
             {renderItem({label: '卷数', value: data?.detail.volume || '', loading})}
             {renderItem({label: '作者', value: data?.detail.author.name || '', loading})}
             {renderItem({label: '发售日', value: data?.detail.date || '', loading})}
-            {renderItem({label: '连载刊物', value: data?.detail.categories[0].name || '', loading, link_url:"/list/comic?category_id=" + data?.detail.categories[0].id})}
+            {renderItem({
+                label: '连载刊物',
+                value: data?.detail.categories[0].name || '',
+                loading,
+                link_url: "/list/comic?category_id=" + data?.detail.categories[0].id
+            })}
             {renderItem({label: 'ISBN', value: data?.detail.isbn || '', loading})}
         </div>
     );

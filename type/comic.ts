@@ -18,7 +18,19 @@ export interface Detail {
     categories: Category[];
 }
 
+export interface NewComisDetail {
+    id: number;
+    name: string;
+    date: string;
+    cover: string;
+}
+
 export interface ComicDetail {
     status: number;
     detail: Detail;
+}
+
+export interface NComicDetail {
+    status: number;
+    detail: NewComisDetail[];
 }

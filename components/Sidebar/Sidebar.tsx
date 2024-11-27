@@ -1,10 +1,11 @@
 'use client';
 
 import {Suspense} from 'react';
-import IndexCalendar from '../index/IndexCalendar';
+import SideCalendar from './SideCalendar';
 import '@mantine/dates/styles.css';
-import {PostList} from "@/components/index/PostList";
 import {PostListLoading} from "@/components/index/PostList.loading";
+import {RecommendedPost} from "@/components/Sidebar/RecommendedPost";
+import PostRender from "@/components/PostRender";
 
 export function Sidebar() {
     return (
@@ -16,7 +17,7 @@ export function Sidebar() {
                     </div>
                     <div className="flex items-center justify-center">
                         <Suspense fallback={<p>正在加载日历中...</p>}>
-                            <IndexCalendar/>
+                            <SideCalendar/>
                         </Suspense>
                     </div>
                 </div>
@@ -25,10 +26,11 @@ export function Sidebar() {
                         <span className="text-center font-bold text-[#242a36]">推荐文章</span>
                     </div>
                     <Suspense fallback={<PostListLoading/>}>
-                        <PostList/>
+                        <RecommendedPost/>
                     </Suspense>
                 </div>
             </div>
         </>
     );
 }
+export default Sidebar;

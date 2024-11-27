@@ -1,11 +1,11 @@
 // components/LoadingScreen.tsx
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 
 interface LoadingScreenProps {
     isLoaded: boolean;
 }
 
-export default function LoadingScreen({ isLoaded }: LoadingScreenProps) {
+export default function LoadingScreen({isLoaded}: LoadingScreenProps) {
     const [progress, setProgress] = useState(0);
     const [isVisible, setIsVisible] = useState(true);
 
@@ -37,7 +37,7 @@ export default function LoadingScreen({ isLoaded }: LoadingScreenProps) {
 
     return (
         <div className={`loading-screen ${isVisible ? '' : 'fade-out'}`}>
-            <div className="progress-bar" style={{ width: `${progress}%` }} />
+            <div className="progress-bar" style={{width: `${progress}%`}}/>
             <p>加载中... {Math.round(progress)}%</p>
         </div>
     );

@@ -8,7 +8,6 @@ import {Box, LoadingOverlay, Pagination} from '@mantine/core';
 import {useScrollIntoView} from '@mantine/hooks';
 import {Sidebar} from '@/components/Sidebar/Sidebar';
 import {MainColumn} from '@/components/layout/MainColumn';
-import scrollToTop from "@/components/scrollToTop";
 
 interface Comic {
     id: number;
@@ -37,17 +36,18 @@ export default function ComicListPage() {
         try {
             const response = await fetch(`http://127.0.0.1:8000${url}`);
             const data = await response.json();
-            if (data.status === 'error') {
+            if (data.status !== 200) {
                 console.log('error');
             }
             setComics(data.detail.items);
             console.log(comics);
             setTotalPages(data.detail.total_pages);
+            scrollIntoView()
         } catch (error) {
             console.error(error);
         } finally {
             toggle(false);
-            scrollToTop()
+            scrollIntoView()
         }
     }, [currentPage, category_id]);
 
@@ -139,7 +139,9 @@ export default function ComicListPage() {
                                     </figure>
                                 </Link>
                                 <p className="text-center whitespace-nowrap text-ellipsis text-[15px] h-[25px] font-normal overflow-hidden">
-                                    <span className="text-[#ef4444]">*</span>
+                                    {comic.auto === 1 ? (
+                                        <span className="text-[#ef4444]">*</span>
+                                    ) : null}
                                     {comic.name || 'Now Loading...'}
                                 </p>
                                 <p className="mt-[8px] text-center whitespace-nowrap text-[#808080] text-[10px] font-normal">

@@ -1,7 +1,5 @@
 'use client';
 import Link from 'next/link';
-import {useEffect, useState} from "react";
-import {fetchPosts} from "@/utils/api";
 import {Skeleton} from "@mantine/core";
 
 interface Post {

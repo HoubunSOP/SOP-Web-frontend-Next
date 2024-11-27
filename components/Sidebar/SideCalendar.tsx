@@ -2,10 +2,10 @@ import {HoverCard, Indicator, List, ThemeIcon} from '@mantine/core';
 import {Calendar} from '@mantine/dates';
 import {IconNotebook} from '@tabler/icons-react';
 import 'dayjs/locale/zh-cn';
-import './IndexCalendar.css';
+import '../index/IndexCalendar.css';
 import {useEffect, useState} from 'react';
 
-function IndexCalendar() {
+function SideCalendar() {
     const [calendarDetail, setCalendarDetail] = useState<CalendarDetail | null>(null);
 
     useEffect(() => {
@@ -110,4 +110,4 @@ function IndexCalendar() {
     );
 }
 
-export default IndexCalendar;
+export default SideCalendar;

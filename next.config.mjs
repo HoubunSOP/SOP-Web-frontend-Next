@@ -24,6 +24,12 @@ const nextConfig = {
                 port: '',
                 pathname: '/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'krr.cherry-takuan.org',
+                port: '',
+                pathname: '/**',
+            },
         ],
     },
 };

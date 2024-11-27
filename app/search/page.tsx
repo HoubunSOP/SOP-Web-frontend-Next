@@ -1,7 +1,4 @@
 import {MainColumn} from "@/components/layout/MainColumn";
-import {PostListLoading} from "@/components/index/PostList.loading";
-import Link from "next/link";
-import {Image, Pagination} from "@mantine/core";
 import {Sidebar} from "@/components/Sidebar/Sidebar";
 import React from "react";
 

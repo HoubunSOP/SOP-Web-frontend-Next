@@ -2,8 +2,11 @@
     position: fixed;
     display: flex;
     transition: top 0.3s;
+    z-index: 50;
 }
-
+.navbar>*{
+    z-index: 80;
+}
 .navbar.hidden {
     top: -55px;
 }

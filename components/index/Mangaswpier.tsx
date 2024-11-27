@@ -9,6 +9,8 @@ import './Mangaswpier.css';
 import 'swiper/css';
 import 'swiper/css/scrollbar';
 import {Scrollbar} from 'swiper/modules';
+import {useEffect, useState} from "react";
+import {NewComisDetail} from "@/type/comic";
 
 const objData = [
     {
@@ -70,6 +72,20 @@ export default TimeFormatter;
 
 export function Mangaswiper() {
     const [visible, {toggle}] = useDisclosure(true);
+    const [newComicsDetail, setNewComicsDetail] = useState<NewComisDetail[]>([]);
+    useEffect(() => {
+        const fetchNewComics = async () => {
+            const url = `/new_comics`;
+            try {
+                const response = await fetch(`http://127.0.0.1:8000${url}`);
+                const data = (await response.json());
+                setNewComicsDetail(data.detail);
+            } catch (error) {
+                console.error('Failed to fetch data', error);
+            }
+        };
+        fetchNewComics();
+    }, []);
     return (
         <div>
             <div className="pb-1 pt-5 px-5 my-4">
@@ -101,7 +117,7 @@ export function Mangaswiper() {
                     modules={[Scrollbar]}
                     className="MangaSwiper select-none rounded-md"
                 >
-                    {objData.map((item) => (
+                    {newComicsDetail.map((item) => (
                         <SwiperSlide key={item.id} className="transition-opacity ease-in-out">
                             <div className="SwiperCard hover:opacity-80 transition-opacity ease-in-out">
                                 <div className="rounded-tl-md absolute w-12 h-5 text-center text-white bg-black/[0.5]">
@@ -118,14 +134,14 @@ export function Mangaswiper() {
                                         />
                                         <Image
                                             className="rounded-md block my-1.5 mx-auto h-[16px] !w-[32px]"
-                                            src={item.mv_img}
+                                            src="/images/label_4.webp"
                                             width={32}
                                             height={16}
                                             alt="mv_img"
                                         />
                                     </a>
                                 </div>
-                                <div className="text-sm text-center">{item.name}</div>
+                                <div className="text-sm text-center overflow-hidden line-clamp-2">{item.name}</div>
                             </div>
                         </SwiperSlide>
                     ))}

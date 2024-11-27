@@ -1,29 +1,20 @@
 'use client';
 import Link from 'next/link';
 import {useEffect, useState} from "react";
-import {fetchPosts} from "@/utils/api";
-import {Skeleton} from "@mantine/core";
 import {PostListLoading} from "@/components/index/PostList.loading";
-
-interface Post {
-    category_id: number;
-    category_name: string;
-    id: number;
-    title: string;
-    date: string;
-    cover: string;
-}
-
-
+import {Detail} from "@/type/article";
+import './PostList.css'
 
 export function PostList() {
-    const [articles, setArticles] = useState<Post[]>([]);
+    const [articles, setArticles] = useState<Detail[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     useEffect(() => {
         const loadFetch = async () => {
+            const url = `/list/articles`;
             try {
-                const {items} = await fetchPosts(1);
-                setArticles(items);
+                const response = await fetch(`http://127.0.0.1:8000${url}`);
+                const data = await response.json()
+                setArticles(data.detail.items);
             } catch (error) {
                 console.error('获取文章失败:', error);
             } finally {
@@ -48,34 +39,32 @@ export function PostList() {
                     ) : (
 
                         articles.map((article) => (
-                            <div
-                                key={article.id} // 使用唯一的 id 作为 key
-                                className="pt-[26px] pb-[15px] px-6 relative rounded-md flex flex-wrap overflow-hidden transition-all hover:bg-slate-100 hover:scale-[1.02] ease-in-out"
+                            <Link href={`/post/${article.id}`}
+                                  key={article.id} // 使用唯一的 id 作为 key
+                                  className="pt-[26px] pb-[15px] px-6 relative rounded-md flex flex-wrap overflow-hidden transition-all hover:bg-slate-100 hover:scale-[1.02] ease-in-out"
                             >
-                                <Link href={`/post/${article.id}`}
-                                      className="aText overflow-hidden h-[3.8rem] mr-5 text-sm font-medium line-clamp-3">
+                                <p
+                                    className="aText overflow-hidden h-[3.8rem] mr-5 text-sm font-medium line-clamp-3">
                                     {article.title}
-                                </Link>
+                                </p>
                                 <div
                                     className="justify-self-end ml-auto w-[120px] h-[72px] md:w-[142px] md:h-[88px] rounded-md overflow-hidden relative">
                                     <div className="h-full relative">
-                                        <Link href={`/post/${article.id}`}>
-                                            <img
-                                                loading="lazy"
-                                                className="w-[100%] h-[100%] absolute top-0 left-0 object-cover"
-                                                src={article.cover}
-                                                alt="post cover"
-                                            />
-                                        </Link>
+                                        <img
+                                            loading="lazy"
+                                            className="w-[100%] h-[100%] absolute top-0 left-0 object-cover"
+                                            src={article.cover}
+                                            alt="post cover"
+                                        />
                                     </div>
                                 </div>
                                 <div className="absolute bottom-2.5">
                                     <Link
-                                        href={`/list/post?category_id=${article.category_id}`} // 使用合适的查询参数
+                                        href={`/list/post?category_id=${article.categories[0].id}`} // 使用合适的查询参数
                                         className="text-xs md:text-sm font-medium tracking-wide text-[#808080]"
                                     >
                                         <i className="fa-solid fa-list-ul mr-1"/>
-                                        {article.category_name}
+                                        {article.categories[0].name}
                                     </Link>
                                     <span
                                         className="text-xs md:text-sm font-medium tracking-wide text-[#808080] pl-2">
@@ -83,7 +72,7 @@ export function PostList() {
                                         {article.date}
                                 </span>
                                 </div>
-                            </div>
+                            </Link>
                         ))
                     )}
                 </div>
