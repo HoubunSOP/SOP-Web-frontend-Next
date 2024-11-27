@@ -1,5 +1,4 @@
 import {Image} from '@mantine/core';
-import {redirect} from 'next/navigation';
 import {MainColumn} from '@/components/layout/MainColumn';
 import '../globals.css';
 import dynamic from "next/dynamic";

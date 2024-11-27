@@ -9,7 +9,7 @@ import {useScrollIntoView} from '@mantine/hooks';
 import {Sidebar} from '@/components/Sidebar/Sidebar';
 import {MainColumn} from '@/components/layout/MainColumn';
 import {fetchComics} from "@/utils/api";
-
+import Head from "next/head";
 interface Comic {
     id: number;
     name: string;
@@ -83,6 +83,9 @@ export default function ComicListPage() {
 
     return (
         <>
+            <Head>
+                <title>漫画列表 | 芳文观星台</title>
+            </Head>
             <MainColumn>
                 <div
                     className="px-[22px] pt-[18px] border-b-[2px] border-gray-200 overflow-hidden bg-white box-border"

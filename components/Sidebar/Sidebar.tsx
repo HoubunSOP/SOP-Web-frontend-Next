@@ -5,7 +5,6 @@ import SideCalendar from './SideCalendar';
 import '@mantine/dates/styles.css';
 import {PostListLoading} from "@/components/index/PostList.loading";
 import {RecommendedPost} from "@/components/Sidebar/RecommendedPost";
-import PostRender from "@/components/PostRender";
 
 export function Sidebar() {
     return (
@@ -33,4 +32,5 @@ export function Sidebar() {
         </>
     );
 }
+
 export default Sidebar;

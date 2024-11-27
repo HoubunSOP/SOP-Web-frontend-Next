@@ -65,6 +65,16 @@ export const fetchArticles = async (page: number, categoryId?: string | null) =>
     return data;
 };
 
+export const fetchCategories = async (type_id: number) => {
+    let url = `/categories?category_type_id=${type_id}`;
+    const response = await fetch(`${BASE_URL}${url}`);
+    const data = await response.json();
+    if (data.status !== 200) {
+        redirect('/not-found');
+    }
+    return data;
+};
+
 export const fetchArticleDetail = async (id: number) => {
     const url = `/articles/${id}`;
     const response = await fetch(`${BASE_URL}${url}`, {

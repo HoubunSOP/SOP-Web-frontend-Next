@@ -9,7 +9,7 @@ import {MainColumn} from '@/components/layout/MainColumn';
 import {useSearchParams} from "next/navigation";
 import {PostListLoading} from "@/components/index/PostList.loading";
 import {Detail} from "@/type/article";
-import {fetchArticles, fetchMagazines} from "@/utils/api";
+import {fetchArticles} from "@/utils/api";
 
 
 export default function PostListPage() {

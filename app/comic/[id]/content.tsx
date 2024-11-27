@@ -1,5 +1,4 @@
 import {Image} from '@mantine/core';
-import {redirect} from 'next/navigation';
 import dynamic from 'next/dynamic';
 import '../globals.css';
 import ComicInfo from '@/components/comic/ComicInfo';

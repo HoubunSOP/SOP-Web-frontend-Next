@@ -1,21 +1,16 @@
 import {Image} from '@mantine/core';
-import {redirect} from 'next/navigation';
 import dynamic from 'next/dynamic';
 import '../globals.css';
-import ComicInfo from '@/components/comic/ComicInfo';
 import React from "react";
-import {ComicDetail} from "@/type/comic";
 import Link from "next/link";
 import {MangazineDetail} from "@/type/mangazine";
 import MangazineInfo from "@/components/mangazine/MangazineInfo";
-import {fetchMagazineDetail} from "@/utils/api";
 
 const PhotoClientComponent = dynamic(() => import('@/components/ImageView'), {
     ssr: false,
 });
 
-export default async function Content({id}: { id: number }) {
-    const data = (await fetchMagazineDetail(id)) as MangazineDetail
+export default async function Content({data}: { data: MangazineDetail }) {
 
     return (
         <div className="p-6 overflow-hidden box-border relative">

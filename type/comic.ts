@@ -9,7 +9,7 @@ export interface Detail {
     date: string;
     cover: string;
     intro: string;
-    volume : number;
+    volume: number;
     isbn: number;
     auto: boolean;
     author: {

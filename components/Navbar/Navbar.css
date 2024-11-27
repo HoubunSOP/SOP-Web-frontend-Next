@@ -4,9 +4,11 @@
     transition: top 0.3s;
     z-index: 50;
 }
-.navbar>*{
+
+.navbar > * {
     z-index: 80;
 }
+
 .navbar.hidden {
     top: -55px;
 }
