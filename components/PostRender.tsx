@@ -34,6 +34,20 @@ const renderTag = ({tag, imageUrls, cindex}: { tag: string, imageUrls: string[],
             }
         }
     }
+    if (tag.includes('<img')) {
+        const srcMatch = tag.match(/src="([^"]+)"/);
+        if (srcMatch) {
+            const src = srcMatch[1];
+            const index = imageUrls.indexOf(src);
+            if (index !== -1) {
+                return (
+                    <PhotoView key={cindex} src={src}>
+                        <Image className="!w-1/2 object-cover" radius="md" src={src} alt="Image Viewer"/>
+                    </PhotoView>
+                );
+            }
+        }
+    }
     return <div key={cindex} dangerouslySetInnerHTML={{__html: tag}}/>;
 };
 

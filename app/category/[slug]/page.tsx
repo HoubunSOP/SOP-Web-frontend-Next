@@ -29,8 +29,18 @@ export async function generateMetadata({params}: { params: { slug: string } }) {
 }
 
 export default function CategoryPage({params}: { params: { slug: string } }) {
-
-
+    let title = "";
+    switch (params.slug) {
+        case 'comic':
+            title = "漫画分类";
+            break;
+        case 'post':
+            title = "文章分类";
+            break;
+        case 'magazine':
+            title = "杂志分类";
+            break;
+    }
     return (
         <>
             <MainColumn>
@@ -40,7 +50,7 @@ export default function CategoryPage({params}: { params: { slug: string } }) {
                         <h1 className="m-0 flex">
                             <span className="inline-block text-[#242a36] text-base font-bold tracking-wide">
                                 <i className="fa-duotone fa-list-tree"/>
-                                文章分类
+                                {title}
                             </span>
                         </h1>
                     </div>
