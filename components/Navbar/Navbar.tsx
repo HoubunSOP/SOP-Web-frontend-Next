@@ -55,6 +55,10 @@ const links = [
     link: '#magazine',
     label: '特典',
   },
+  {
+    link: '/search',
+    label: '搜索',
+  },
 ]
 const navPages = [
   {
@@ -84,6 +88,10 @@ const navPages = [
   {
     name: '特典',
     path: '/list/post?c=6',
+  },
+  {
+    name: '搜索',
+    path: '/search',
   },
 ]
 
