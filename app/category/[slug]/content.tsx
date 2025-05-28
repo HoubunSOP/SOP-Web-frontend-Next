@@ -1,12 +1,11 @@
 'use client';
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
-import {Detail} from "@/type/article";
 import {redirect} from "next/navigation";
 import {fetchCategories} from "@/utils/api";
 
 export default function Content({slug}: { slug: string }) {
-    const [categories, setCategories] = useState<Detail[]>([]);
+    const [categories, setCategories] = useState<Array<any>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
