@@ -14,6 +14,9 @@ const WalineComment = () => {
                 'https://fastly.jsdelivr.net/gh/walinejs/emojis@1.1.0/bilibili',
                 'https://fastly.jsdelivr.net/gh/walinejs/emojis@1.1.0/tw-emoji',
             ],
+            locale: {
+                admin: '芳文观星台组员'
+            },
             requiredMeta: ['nick', 'mail'],
             serverURL: 'https://waline-sop.sakurakoi.top',
         });
