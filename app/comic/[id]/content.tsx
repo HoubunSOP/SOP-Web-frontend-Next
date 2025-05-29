@@ -11,6 +11,9 @@ const PhotoClientComponent = dynamic(() => import('@/components/ImageView'), {
     ssr: false,
 });
 
+const WalineComment = dynamic(() => import('@/components/Comment'), {
+    ssr: false,
+});
 export default async function Content({id}: { id: number }) {
     // revalidate表示在指定的秒数内缓存请求，和pages目录中revalidate配置相同
     const data = (await fetchComicDetail(id)) as ComicDetail
@@ -61,6 +64,7 @@ export default async function Content({id}: { id: number }) {
                     </PhotoClientComponent>
                 </div>
             </div>
+            <WalineComment/>
         </div>
     );
 }

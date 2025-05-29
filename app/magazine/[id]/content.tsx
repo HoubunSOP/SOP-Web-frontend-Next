@@ -9,6 +9,9 @@ import MangazineInfo from "@/components/mangazine/MangazineInfo";
 const PhotoClientComponent = dynamic(() => import('@/components/ImageView'), {
     ssr: false,
 });
+const WalineComment = dynamic(() => import('@/components/Comment'), {
+    ssr: false,
+});
 
 export default async function Content({data}: { data: MangazineDetail }) {
 
@@ -55,6 +58,7 @@ export default async function Content({data}: { data: MangazineDetail }) {
                     </PhotoClientComponent>
                 </div>
             </div>
+            <WalineComment/>
         </div>
     );
 }

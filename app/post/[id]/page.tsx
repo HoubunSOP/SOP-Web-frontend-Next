@@ -11,6 +11,9 @@ const PostRenderComponent = dynamic(() => import('@/components/PostRender'), {
 const Sidebar = dynamic(() => import('@/components/Sidebar/Sidebar'), {
     ssr: false,
 });
+const WalineComment = dynamic(() => import('@/components/Comment'), {
+    ssr: false,
+});
 export default async function PostPage({params}: { params: { id: Number } }) {
     const {id} = params;
     // @ts-ignore
@@ -44,6 +47,7 @@ export default async function PostPage({params}: { params: { id: Number } }) {
                             <PostRenderComponent data={data}/>
                         </div>
                     </div>
+                    <WalineComment/>
                 </article>
             </MainColumn>
             <Sidebar/>

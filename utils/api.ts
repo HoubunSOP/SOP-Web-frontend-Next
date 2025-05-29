@@ -1,6 +1,6 @@
 import {redirect} from "next/navigation";
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://sop-api.sakurakoi.top";
 
 export const fetchNewComics = async () => {
     const url = "/new_comics";
