@@ -31,9 +31,8 @@ body {
 }
 
 :root {
-    --waline-theme-color: #27aee6;
-    --waline-active-color: #2eccfb;
-
+    --waline-theme-color: #27aee6 !important;
+    --waline-active-color: #2eccfb !important;
 }
 
 
