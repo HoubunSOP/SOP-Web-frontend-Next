@@ -19,8 +19,7 @@ export const fetchRecommendedArticles = async () => {
 export const fetchCalendar = async () => {
     const url = "/calendar";
     const response = await fetch(`${BASE_URL}${url}`);
-    const data = await response.json();
-    return data;
+    return await response.json();
 };
 
 export const fetchComics = async (page: number, categoryId?: string | null) => {
