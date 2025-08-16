@@ -15,7 +15,7 @@ export default function PostListPage() {
   const searchParams = useSearchParams()
   const [totalPages, setTotalPages] = useState(1)
   const [articles, setPosts] = useState<Detail[]>([])
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = QuseState(1)
   const [visible, toggle] = useState(true)
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>()
   const [isLoading, setIsLoading] = useState<boolean>(true)

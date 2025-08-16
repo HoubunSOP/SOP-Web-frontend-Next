@@ -1,6 +1,6 @@
 import {redirect} from "next/navigation";
 
-const BASE_URL = "https://sop-api.sakurakoi.top";
+const BASE_URL = "https://api.fwgxt.top";
 
 export const fetchNewComics = async () => {
     const url = "/new_comics";
@@ -31,7 +31,7 @@ export const fetchComics = async (page: number, categoryId?: string | null) => {
     const response = await fetch(`${BASE_URL}${url}`);
     const data = await response.json();
     if (data.status !== 200) {
-        redirect('/not-found');
+        throw new Error(`status ${data.status}`)
     }
     return data;
 };
@@ -45,7 +45,7 @@ export const fetchMagazines = async (page: number, categoryId?: string | null) =
     const response = await fetch(`${BASE_URL}${url}`);
     const data = await response.json();
     if (data.status !== 200) {
-        redirect('/not-found');
+        throw new Error(`status ${data.status}`)
     }
     return data;
 };
@@ -59,7 +59,7 @@ export const fetchArticles = async (page: number, categoryId?: string | null) =>
     const response = await fetch(`${BASE_URL}${url}`);
     const data = await response.json();
     if (data.status !== 200) {
-        redirect('/not-found');
+        throw new Error(`status ${data.status}`)
     }
     return data;
 };
@@ -69,7 +69,7 @@ export const fetchCategories = async (type_id: number) => {
     const response = await fetch(`${BASE_URL}${url}`);
     const data = await response.json();
     if (data.status !== 200) {
-        redirect('/not-found');
+        throw new Error(`status ${data.status}`)
     }
     return data;
 };
